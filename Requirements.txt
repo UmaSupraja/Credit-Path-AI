@@ -1,0 +1,12 @@
+Data Handling:
+1.pandas
+2.numpy
+
+Modeling:
+1.scikit-learn 
+2.xgboost 
+
+Data Visualization:
+1.matplotlib 
+2.seaborn
+3.plotly
