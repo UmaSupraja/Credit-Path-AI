@@ -73,13 +73,12 @@ async def lifespan(app: FastAPI):
 
 
 # --- Initialize FastAPI App ---
-# We update the root_path for Vercel deployment and add the lifespan event
+# We have REMOVED root_path="/api" to fix the Vercel 404 error
 app = FastAPI(
     title="CreditPathAI Loan Recovery System",
     description="An AI-based system to predict loan default risk and recommend actions.",
     version="1.0.0",
-    lifespan=lifespan,
-    root_path="/api" # This tells Vercel that all routes are under /api
+    lifespan=lifespan
 )
 
 # --- Add CORS Middleware ---
@@ -144,7 +143,7 @@ def map_to_recommendation(probability: float) -> (str, str):
 # Vercel's "routes" in vercel.json handles this now.
 
 # NEW: Root path for API (for testing)
-@app.get("/")
+@app.get("/api")
 async def read_root():
     return {"message": "CreditPathAI Backend is running. Access the frontend at its separate URL."}
 
