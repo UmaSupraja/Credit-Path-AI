@@ -1,0 +1,4 @@
+Requirements for Credit Path-AI
+
+fastapi
+uvicorn
