@@ -1,4 +1,4 @@
-Requirements for Credit Path-AI
+# Requirements for Credit Path-AI
 
 fastapi
 uvicorn
