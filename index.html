@@ -330,14 +330,12 @@
 
     <!-- 
     =================================================================
-    SCRIPT SECTION - UPDATED FOR REAL API
+    SCRIPT SECTION - Real Database Logic
     =================================================================
     -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // --- This is the new, real login system ---
-            // We removed the old demoUserEmail and demoUserPassword variables
-
+            
             // Page containers
             const loginPage = document.getElementById('login-page');
             const calculatorPage = document.getElementById('calculator-page');
@@ -351,6 +349,7 @@
             const togglePasswordBtn = document.getElementById('toggle-password'); 
             const loginMessage = document.getElementById('login-message');
             const loginError = document.getElementById('login-error'); // New
+            const goToCreateAccountBtn = document.getElementById('go-to-create-account-btn'); // <-- *** FIX IS HERE ***
 
             // Create Account elements
             const createAccountForm = document.getElementById('create-account-form');
@@ -390,8 +389,8 @@
             // ---
             // --- API URLS ---
             // ---
-            // These URLs are set for LOCAL TESTING.
-            // For Vercel, these must be changed to:
+            // This is the "Local Testing" version.
+            // For Vercel, these must be changed back to:
             // const createApiUrl = "/create-account";
             // const loginApiUrl = "/login";
             // const calcApiUrl = "/predict/batch";
