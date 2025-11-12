@@ -57,6 +57,8 @@
             
             <!-- Success message after account creation -->
             <p id="login-message" class="text-green-400 text-center mb-4 hidden"></p>
+            <!-- Error message for login -->
+            <p id="login-error" class="text-red-400 text-center mb-4 hidden"></p>
 
             <form id="login-form" class="space-y-6">
                 <div>
@@ -76,7 +78,6 @@
                     </div>
                 </div>
                 <div>
-                    <!-- THIS IS THE BUTTON I ACCIDENTALLY DELETED -->
                     <button id="login-btn" type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 px-6 rounded-lg text-lg transition-colors">
                         Sign In
                     </button>
@@ -102,6 +103,8 @@
         <div class="bg-slate-800 p-8 rounded-lg shadow-xl w-full max-w-md border border-slate-700">
             <h1 class="text-4xl font-bold text-white mb-2 text-center">Create Account</h1>
             <p class="text-slate-400 text-center mb-8">Get started with your free account.</p>
+            <!-- Error message for create account -->
+            <p id="create-error" class="text-red-400 text-center mb-4 hidden"></p>
 
             <form id="create-account-form" class="space-y-6">
                 <div>
@@ -558,11 +561,13 @@
 
                 // This is the URL where your Python backend is running.
                 // If your backend is on a different machine, replace 'localhost'.
-                const apiUrl = "http://localhost:8000/predict/batch"; // Or "http://127.0.0.1:8000/predict/batch"
+                const createApiUrl = "http://localhost:8000/create-account";
+                const loginApiUrl = "http://localhost:8000/login";
+                const calcApiUrl = "http://localhost:8000/predict/batch"; // Or "http://127.0.0.1:8000/predict/batch"
 
                 try {
                     // This is the real API call using fetch()
-                    const response = await fetch(apiUrl, {
+                    const response = await fetch(calcApiUrl, { // <-- THIS WAS THE BUG
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -622,7 +627,7 @@
                 if (result.risk_level === "High Risk") {
                     borderColor = 'border-red-500';
                     textColor = 'text-red-300';
-                    riskIcon = `<svg class="w-16 h-16 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`;
+                    riskIcon = `<svg class."w-16 h-16 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`;
                 } else if (result.risk_level === "Medium Risk") {
                     borderColor = 'border-yellow-500';
                     textColor = 'text-yellow-300';
