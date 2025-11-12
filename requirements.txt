@@ -1,4 +1,12 @@
 # Requirements for Credit Path-AI
 
+# (Base libraries for FastAPI)
+
 fastapi
-uvicorn
+uvicorn[standard]
+pydantic[email]
+
+# New libraries for database and passwords
+
+databases[asyncpg]
+passlib[bcrypt]
