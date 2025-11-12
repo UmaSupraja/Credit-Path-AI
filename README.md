@@ -50,14 +50,14 @@ cd Credit-Path-AI
 
 Create and Activate a Python Virtual Environment:
 
-# Create the environment
+### Create the environment
 python -m venv venv
 
-# Activate the environment
-# On Windows:
+### Activate the environment
+#### On Windows:
 .\venv\Scripts\Activate.ps1
-# On Mac/Linux:
-# source venv/bin/activate
+### On Mac/Linux:
+### source venv/bin/activate
 
 
 Install the Required Libraries:
@@ -81,3 +81,4 @@ Find the line const apiUrl = "/predict/batch";
 Change it to const apiUrl = "http://localhost:8000/predict/batch";
 
 Save the file, then open index.html in your web browser.
+
