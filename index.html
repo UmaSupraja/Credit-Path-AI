@@ -335,12 +335,8 @@
     -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // --- NEW: Demo User Database ---
-            // We will store the created account's email and password here.
-            // In a real app, this would be in a secure database.
-            let demoUserEmail = null;
-            let demoUserPassword = null;
-            // --- End of New ---
+            // --- This is the new, real login system ---
+            // We removed the old demoUserEmail and demoUserPassword variables
 
             // Page containers
             const loginPage = document.getElementById('login-page');
@@ -351,18 +347,20 @@
             const loginForm = document.getElementById('login-form');
             const loginBtn = document.getElementById('login-btn');
             const emailInput = document.getElementById('email');
-            const passwordInput = document.getElementById('password'); // ADD THIS
-            const togglePasswordBtn = document.getElementById('toggle-password'); // ADD THIS
+            const passwordInput = document.getElementById('password'); 
+            const togglePasswordBtn = document.getElementById('toggle-password'); 
             const loginMessage = document.getElementById('login-message');
-            const goToCreateAccountBtn = document.getElementById('go-to-create-account-btn');
+            const loginError = document.getElementById('login-error'); // New
 
             // Create Account elements
             const createAccountForm = document.getElementById('create-account-form');
+            const newEmailInput = document.getElementById('new-email'); // New
             const newPasswordInput = document.getElementById('new-password');
-            const toggleNewPasswordBtn = document.getElementById('toggle-new-password'); // ADD THIS
+            const toggleNewPasswordBtn = document.getElementById('toggle-new-password'); 
             const confirmPasswordInput = document.getElementById('confirm-password');
-            const toggleConfirmPasswordBtn = document.getElementById('toggle-confirm-password'); // ADD THIS
+            const toggleConfirmPasswordBtn = document.getElementById('toggle-confirm-password'); 
             const goToLoginBtn = document.getElementById('go-to-login-btn');
+            const createError = document.getElementById('create-error'); // New
 
             // Calculator elements
             const logoutBtn = document.getElementById('logout-btn');
@@ -388,6 +386,19 @@
             const chatInput = document.getElementById('chat-input');
             const chatHistory = document.getElementById('chat-history');
             const chatLoading = document.getElementById('chat-loading');
+
+            // ---
+            // --- API URLS ---
+            // ---
+            // These URLs are set for LOCAL TESTING.
+            // For Vercel, these must be changed to:
+            // const createApiUrl = "/create-account";
+            // const loginApiUrl = "/login";
+            // const calcApiUrl = "/predict/batch";
+            const createApiUrl = "http://localhost:8000/create-account";
+            const loginApiUrl = "http://localhost:8000/login";
+            const calcApiUrl = "http://localhost:8000/predict/batch";
+            // ---
 
             // ---
             // --- Page & Modal Logic ---
@@ -449,61 +460,91 @@
 
 
             // ---
-            // --- Login / Logout / Create Account Logic ---
+            // --- NEW: Real Login / Logout / Create Account Logic ---
             // ---
 
-            loginForm.addEventListener('submit', (e) => {
+            loginForm.addEventListener('submit', async (e) => {
                 e.preventDefault(); 
                 loginMessage.classList.add('hidden');
+                loginError.classList.add('hidden');
                 
-                // Get the values from the form
+                if (!loginForm.checkValidity()) {
+                    showModal('Please enter a valid email and password.');
+                    return;
+                }
+
                 const email = emailInput.value;
                 const password = passwordInput.value;
 
-                if (!loginForm.checkValidity()) {
-                    showModal('Please enter a valid email and password.');
-                
-                // Check if an account has even been created
-                } else if (demoUserEmail === null || demoUserPassword === null) {
-                    showModal('No account found. Please create an account first.');
+                try {
+                    const response = await fetch(loginApiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email: email, password: password })
+                    });
 
-                // --- THIS IS THE NEW CHECK ---
-                // Check if the entered email and password match our saved ones
-                } else if (email === demoUserEmail && password === demoUserPassword) {
-                    // --- SUCCESS ---
-                    welcomeEmail.textContent = `Welcome, ${email}!`;
-                    showPage('calculator-page');
-                    loginForm.reset();
-                    resultContainer.classList.add('hidden');
-                    resultPlaceholder.classList.remove('hidden');
-                } else {
-                    // --- FAILURE ---
-                    // The password or email was wrong. Show the user's requested error.
-                    showModal('The entered email or password is incorrect.');
+                    if (response.ok) {
+                        // --- SUCCESS ---
+                        welcomeEmail.textContent = `Welcome, ${email}!`;
+                        showPage('calculator-page');
+                        loginForm.reset();
+                        resultContainer.classList.add('hidden');
+                        resultPlaceholder.classList.remove('hidden');
+                    } else {
+                        // --- FAILURE ---
+                        const errorData = await response.json();
+                        loginError.textContent = errorData.detail || 'Login failed. Please try again.';
+                        loginError.classList.remove('hidden');
+                    }
+                } catch (error) {
+                    console.error("Login error:", error);
+                    loginError.textContent = 'Could not connect to the server. Please try again later.';
+                    loginError.classList.remove('hidden');
                 }
             });
             
-            createAccountForm.addEventListener('submit', (e) => {
+            createAccountForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
-                // Get the new email value
-                const email = document.getElementById('new-email').value;
+                createError.classList.add('hidden');
+
+                const email = newEmailInput.value;
                 const newPassword = newPasswordInput.value;
                 const confirmPassword = confirmPasswordInput.value;
 
                 if (!createAccountForm.checkValidity()) {
                      showModal('Please fill out all fields.');
-                } else if (newPassword !== confirmPassword) {
+                     return;
+                }
+                if (newPassword !== confirmPassword) {
                     showModal('Passwords do not match. Please try again.');
-                } else {
-                    // --- NEW: Save to our "Demo Database" ---
-                    demoUserEmail = email;
-                    demoUserPassword = newPassword;
-                    // --- End of New ---
+                    return;
+                }
 
-                    createAccountForm.reset();
-                    showPage('login-page');
-                    loginMessage.textContent = 'Account created successfully! Please sign in.';
-                    loginMessage.classList.remove('hidden');
+                try {
+                    const response = await fetch(createApiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email: email, password: newPassword })
+                    });
+
+                    if (response.ok) {
+                        // --- SUCCESS ---
+                        createAccountForm.reset();
+                        showPage('login-page');
+                        loginError.classList.add('hidden');
+                        loginMessage.textContent = 'Account created successfully! Please sign in.';
+                        loginMessage.classList.remove('hidden');
+                    } else {
+                        // --- FAILURE ---
+                        const errorData = await response.json();
+                        createError.textContent = errorData.detail || 'Could not create account.';
+                        createError.classList.remove('hidden');
+                    }
+
+                } catch (error) {
+                    console.error("Create account error:", error);
+                    createError.textContent = 'Could not connect to the server. Please try again later.';
+                    createError.classList.remove('hidden');
                 }
             });
 
@@ -512,22 +553,26 @@
                 calculatorForm.reset();
                 closeChat();
                 loginMessage.classList.add('hidden');
+                loginError.classList.add('hidden');
             });
             
             goToCreateAccountBtn.addEventListener('click', (e) => {
                 e.preventDefault();
+                loginError.classList.add('hidden');
+                loginMessage.classList.add('hidden');
                 showPage('create-account-page');
             });
 
             goToLoginBtn.addEventListener('click', (e) => {
                 e.preventDefault();
+                createError.classList.add('hidden');
                 showPage('login-page');
             });
             
             closeModalBtn.addEventListener('click', hideModal);
 
             // ---
-            // --- Calculator Logic (NOW CONNECTED) ---
+            // --- Calculator Logic (Remains the same) ---
             // ---
 
             calculatorForm.addEventListener('submit', async (e) => {
@@ -553,21 +598,12 @@
                     creditSc: parseInt(formData.get('creditSc')),
                 };
 
-                // --- START OF CHANGES ---
-                // We wrap the single 'data' object in the format your API expects: { "instances": [...] }
                 const apiPayload = {
                     instances: [data]
                 };
 
-                // This is the URL where your Python backend is running.
-                // If your backend is on a different machine, replace 'localhost'.
-                const createApiUrl = "http://localhost:8000/create-account";
-                const loginApiUrl = "http://localhost:8000/login";
-                const calcApiUrl = "http://localhost:8000/predict/batch"; // Or "http://127.0.0.1:8000/predict/batch"
-
                 try {
-                    // This is the real API call using fetch()
-                    const response = await fetch(calcApiUrl, { // <-- THIS WAS THE BUG
+                    const response = await fetch(calcApiUrl, { // <-- Use the calcApiUrl
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -576,15 +612,12 @@
                     });
 
                     if (!response.ok) {
-                        // Handle server errors (e.g., 500) or validation errors (e.g., 422)
                         const errorData = await response.json();
-                        // Use the 'detail' field from FastAPI's HTTPException
                         throw new Error(errorData.detail || 'API request failed');
                     }
                     
                     const resultData = await response.json();
                     
-                    // Your API returns {"predictions": [...]}, so we get the first item
                     if (resultData.predictions && resultData.predictions.length > 0) {
                         const result = resultData.predictions[0];
                         displayResult(result);
@@ -594,12 +627,10 @@
 
                 } catch (error) {
                     console.error("Error calling backend API:", error);
-                    // Show a user-friendly error. This often happens if the backend server isn't running.
                     showModal(`Error calculating risk: ${error.message}. Is the backend server running?`);
                 } finally {
                     setLoading(false);
                 }
-                // --- END OF CHANGES ---
             });
 
             const setLoading = (isLoading) => {
@@ -616,18 +647,13 @@
                 }
             };
 
-            // --- REMOVED ---
-            // The 'mockApiCall' function was here, but we deleted it 
-            // because we are now calling the real API.
-
             const displayResult = (result) => {
                 let borderColor, textColor, riskIcon;
 
-                // The API returns 'risk_level' and 'recommended_action'
                 if (result.risk_level === "High Risk") {
                     borderColor = 'border-red-500';
                     textColor = 'text-red-300';
-                    riskIcon = `<svg class."w-16 h-16 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`;
+                    riskIcon = `<svg class="w-16 h-16 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`;
                 } else if (result.risk_level === "Medium Risk") {
                     borderColor = 'border-yellow-500';
                     textColor = 'text-yellow-300';
@@ -712,7 +738,7 @@
                 Keep your answers concise and easy to understand.`;
                 
                 // --- API KEY ADDED ---
-                const apiKey = "AIzaSyB9-rfeW-McsTNZ5bEpHwfezCY9tWQKIeQ";
+                const apiKey = "AIzaSyB9-rfeW-McsTNZ5bEpHwfezCY9tWQKIeQ"; // Use your actual API key
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
 
                 const payload = {
