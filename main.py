@@ -1,3 +1,4 @@
+# Force redeploy
 import logging
 import os
 from fastapi import FastAPI, HTTPException
@@ -244,3 +245,4 @@ async def batch_predict(request: BatchPredictionRequest):
     except Exception as e:
         logger.error({"status": "FAILURE", "error": str(e)})
         raise HTTPException(status_code=500, detail=f"An internal server error occurred: {e}")
+
