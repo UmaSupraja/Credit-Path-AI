@@ -1,12 +1,21 @@
-# Requirements for Credit Path-AI
+# requirements.txt — Credit Path-AI
 
-# (Base libraries for FastAPI)
+fastapi>=0.95.0
+uvicorn[standard]>=0.22.0
 
-fastapi
-uvicorn[standard]
-pydantic[email]
+# Pydantic v2 + email support
+pydantic[email]>=2.0.0
+email-validator>=1.3.0
 
-# New libraries for database and passwords
+# Database layers:
+# - SQLAlchemy is required by "databases" and for your table metadata
+# - databases extra installs DB drivers; include both sqlite and asyncpg so
+#   deployments and local testing both work.
+sqlalchemy>=2.0.0
+databases[sqlite,asyncpg]>=0.6.0
 
-databases[asyncpg]
-passlib[bcrypt]
+# Password hashing
+passlib[bcrypt]>=1.7.0
+
+# (Optional but useful for runtime envs & local testing)
+python-dotenv>=1.0.0
