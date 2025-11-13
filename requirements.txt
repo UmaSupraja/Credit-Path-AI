@@ -6,7 +6,9 @@ pydantic[email]
 passlib[bcrypt]
 
 # New libraries for database and login
-
 SQLAlchemy
 psycopg2-binary
 python-jose[cryptography]
+
+# New library for form data (login)
+python-multipart
