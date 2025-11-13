@@ -2,6 +2,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CREDIT PATH-AI</title>
+    <!-- 1. Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* Hide scrollbar */
@@ -45,20 +46,141 @@
 </head>
 <body class="bg-slate-900 text-slate-200 font-sans min-h-screen antialiased">
 
-    <div id="calculator-page" class="min-h-screen relative">
+    <!-- 
+      PAGE 1: LOGIN PAGE 
+      (Visible by default)
+    -->
+    <div id="login-page" class="flex items-center justify-center min-h-screen p-4">
+        <div class="bg-slate-800 p-8 rounded-lg shadow-xl w-full max-w-md border border-slate-700">
+            <h1 class="text-4xl font-bold text-white mb-2 text-center">CREDIT PATH-AI</h1>
+            <p class="text-slate-400 text-center mb-8">Welcome! Please sign in.</p>
+            
+            <!-- Success message after account creation -->
+            <p id="login-message" class="text-green-400 text-center mb-4 hidden"></p>
+            <!-- Error message for login -->
+            <p id="login-error" class="text-red-400 text-center mb-4 hidden"></p>
+
+            <form id="login-form" class="space-y-6">
+                <div>
+                    <label for="email" class="block text-sm font-medium text-slate-300 mb-1">Email</label>
+                    <input type="email" id="email" name="email" placeholder="user@example.com" class="w-full bg-slate-700 border border-slate-600 rounded-md p-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                </div>
+                <div>
+                    <label for="password" class="block text-sm font-medium text-slate-300 mb-1">Password</label>
+                    <!-- Add relative container -->
+                    <div class="relative">
+                        <input type="password" id="password" name="password" placeholder="••••••••" class="w-full bg-slate-700 border border-slate-600 rounded-md p-3 pr-10 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                        <!-- Add toggle button -->
+                        <button type="button" id="toggle-password" class="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 hover:text-white" aria-label="Toggle password visibility">
+                            <svg id="toggle-password-eye" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.478 0-8.268-2.943-9.542-7z"></path></svg>
+                            <svg id="toggle-password-eye-slash" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7 1.274 4.057 5.064 7-9.542-7 .847 0 1.669.104 2.458.298l-1.05 1.05A3.001 3.001 0 009 12a3 3 0 103.875 3.825l1.05 1.05z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16.95 16.95L21.5 21.5m-3.55-2.55L12 13.05M3 3l18 18"></path></svg>
+                        </button>
+                    </div>
+                </div>
+                <div>
+                    <button id="login-btn" type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 px-6 rounded-lg text-lg transition-colors">
+                        Sign In
+                    </button>
+                </div>
+            </form>
+
+            <div class="text-center mt-6">
+                <p class="text-slate-400">
+                    New here? 
+                    <button id="go-to-create-account-btn" class="font-medium text-indigo-400 hover:text-indigo-300 underline">
+                        Create an account
+                    </button>
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 
+      NEW PAGE 3: CREATE ACCOUNT PAGE 
+      (Hidden by default)
+    -->
+    <div id="create-account-page" class="flex items-center justify-center min-h-screen p-4 hidden">
+        <div class="bg-slate-800 p-8 rounded-lg shadow-xl w-full max-w-md border border-slate-700">
+            <h1 class="text-4xl font-bold text-white mb-2 text-center">Create Account</h1>
+            <p class="text-slate-400 text-center mb-8">Get started with your free account.</p>
+            <!-- Error message for create account -->
+            <p id="create-error" class="text-red-400 text-center mb-4 hidden"></p>
+
+            <form id="create-account-form" class="space-y-6">
+                <div>
+                    <label for="new-email" class="block text-sm font-medium text-slate-300 mb-1">Email</label>
+                    <input type="email" id="new-email" name="new-email" placeholder="user@example.com" class="w-full bg-slate-700 border border-slate-600 rounded-md p-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                </div>
+                <div>
+                    <label for="new-password" class="block text-sm font-medium text-slate-300 mb-1">New Password</label>
+                    <!-- Add relative container -->
+                    <div class="relative">
+                        <input type="password" id="new-password" name="new-password" placeholder="••••••••" class="w-full bg-slate-700 border border-slate-600 rounded-md p-3 pr-10 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                        <!-- Add toggle button -->
+                        <button type="button" id="toggle-new-password" class="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 hover:text-white" aria-label="Toggle new password visibility">
+                            <svg id="toggle-new-password-eye" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.478 0-8.268-2.943-9.542-7z"></path></svg>
+                            <svg id="toggle-new-password-eye-slash" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7 1.274 4.057 5.064 7-9.542-7 .847 0 1.669.104 2.458.298l-1.05 1.05A3.001 3.001 0 009 12a3 3 0 103.875 3.825l1.05 1.05z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16.95 16.95L21.5 21.5m-3.55-2.55L12 13.05M3 3l18 18"></path></svg>
+                        </button>
+                    </div>
+                </div>
+                <div>
+                    <label for="confirm-password" class="block text-sm font-medium text-slate-300 mb-1">Confirm New Password</label>
+                    <!-- Add relative container -->
+                    <div class="relative">
+                        <input type="password" id="confirm-password" name="confirm-password" placeholder="••••••••" class="w-full bg-slate-700 border border-slate-600 rounded-md p-3 pr-10 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                        <!-- Add toggle button -->
+                        <button type="button" id="toggle-confirm-password" class="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 hover:text-white" aria-label="Toggle confirm password visibility">
+                            <svg id="toggle-confirm-password-eye" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.478 0-8.268-2.943-9.542-7z"></path></svg>
+                            <svg id="toggle-confirm-password-eye-slash" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7 1.274 4.057 5.064 7-9.542-7 .847 0 1.669.104 2.458.298l-1.05 1.05A3.001 3.001 0 009 12a3 3 0 103.875 3.825l1.05 1.05z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16.95 16.95L21.5 21.5m-3.55-2.55L12 13.05M3 3l18 18"></path></svg>
+                        </button>
+                    </div>
+                </div>
+                <div>
+                    <button id="create-account-btn" type="submit" class="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-3 px-6 rounded-lg text-lg transition-colors">
+                        Create Account
+                    </button>
+                </div>
+            </form>
+            
+            <div class="text-center mt-6">
+                <p class="text-slate-400">
+                    Already have an account? 
+                    <button id="go-to-login-btn" class="font-medium text-indigo-400 hover:text-indigo-300 underline">
+                        Sign in
+                    </button>
+                </p>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 
+      PAGE 2: CALCULATOR / DASHBOARD PAGE 
+      (Hidden by default)
+    -->
+    <div id="calculator-page" class="min-h-screen hidden relative">
+        <!-- Header / Navbar -->
         <header class="bg-slate-800 border-b border-slate-700">
             <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between items-center h-16">
                     <div class="flex-shrink-0 flex items-center">
                         <h1 class="text-2xl font-bold text-white">CREDIT PATH-AI</h1>
                     </div>
+                    <div class="flex items-center">
+                        <span class="text-slate-300 mr-4 hidden sm:block" id="welcome-email">Welcome!</span>
+                        <button id="logout-btn" class="bg-red-600 hover:bg-red-500 text-white font-semibold py-2 px-4 rounded-lg transition-colors text-sm">
+                            Logout
+                        </button>
+                    </div>
                 </div>
             </nav>
         </header>
 
+        <!-- Main Content -->
         <main class="max-w-7xl mx-auto p-4 sm:px-6 lg:px-8 py-8">
             <div class="flex flex-col lg:flex-row gap-8">
                 
+                <!-- Left Column: Form -->
                 <div class="lg:w-2/3 bg-slate-800 p-6 md:p-8 rounded-lg shadow-xl border border-slate-700">
                     <h2 class="text-3xl font-semibold text-white mb-6">Calculate Your Credit Risk</h2>
                     <p class="text-slate-400 mb-8">
@@ -66,6 +188,7 @@
                     </p>
                     
                     <form id="calculator-form" class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-6">
+                        <!-- 8 Fields from main.py -->
                         <div>
                             <label class="block text-sm font-medium text-slate-300 mb-1">Home Ownership</label>
                             <select name="homeOwn" class="w-full bg-slate-700 border border-slate-600 rounded-md p-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
@@ -112,6 +235,7 @@
                             <input type="number" name="creditSc" placeholder="300 - 850" min="300" max="850" class="w-full bg-slate-700 border border-slate-600 rounded-md p-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
                         </div>
 
+                        <!-- Submit Button -->
                         <div class="md:col-span-2 mt-6">
                              <button id="calculate-btn" type="submit" class="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-3 px-6 rounded-lg text-lg transition-colors flex items-center justify-center gap-3">
                                 <svg id="calc-submit-icon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v.01M9 10h.01M9 13h.01M12 10h.01M12 13h.01M15 10h.01M15 13h.01M9 17h.01M12 17h.01M15 17h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
@@ -125,10 +249,13 @@
                     </form>
                 </div>
                 
+                <!-- Right Column: Result -->
                 <div class="lg:w-1/3">
                     <div id="result-container" class="bg-slate-800 p-6 md:p-8 rounded-lg shadow-xl border border-slate-700 sticky top-24 hidden">
-                        </div>
+                        <!-- Result will be injected here -->
+                    </div>
                     
+                    <!-- Placeholder for result -->
                     <div id="result-placeholder" class="bg-slate-800 p-6 md:p-8 rounded-lg shadow-xl border border-dashed border-slate-600 sticky top-24 text-center">
                         <svg class="w-16 h-16 mx-auto mb-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 17v-2m3 2v-4m3 4v-6m2 10V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2h14a2 2 0 002-2z"></path></svg>
                         <h3 class="text-xl font-semibold text-slate-300 mb-2">Your Result</h3>
@@ -139,11 +266,13 @@
             </div>
         </main>
 
+        <!-- AI CHAT: Floating Button -->
         <button id="chat-btn" title="Ask Credit Coach" class="fixed bottom-6 right-6 bg-indigo-600 hover:bg-indigo-500 text-white w-16 h-16 rounded-full shadow-xl flex items-center justify-center transition-transform transform hover:scale-110">
             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.54 15.266 3 13.684 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
         </button>
     </div>
 
+    <!-- Custom Modal for Errors -->
     <div id="error-modal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50 hidden">
         <div class="bg-slate-800 rounded-lg shadow-xl max-w-sm w-full p-6 text-center border border-slate-700">
             <svg class="w-16 h-16 mx-auto mb-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
@@ -155,8 +284,10 @@
         </div>
     </div>
 
+    <!-- AI CHAT: Modal -->
     <div id="chat-modal" class="fixed bottom-24 right-6 w-full max-w-md bg-slate-800 rounded-lg shadow-2xl border border-slate-700 hidden" style="height: 60vh;">
         <div class="flex flex-col h-full">
+            <!-- Header -->
             <div class="flex justify-between items-center p-4 border-b border-slate-700">
                 <h3 class="text-lg font-semibold text-white">Ask the Credit Coach</h3>
                 <button id="close-chat-btn" class="text-slate-400 hover:text-white">
@@ -164,12 +295,16 @@
                 </button>
             </div>
             
+            <!-- Chat History -->
             <div id="chat-history" class="flex-1 p-4 overflow-y-auto flex flex-col space-y-2">
+                <!-- Welcome Message -->
                 <div class="chat-bubble bot">
                     Hello! I'm your AI Credit Coach. Ask me anything about credit scores, loans, or financial health.
                 </div>
-                </div>
+                <!-- Chat messages will be added here -->
+            </div>
             
+            <!-- Loading Indicator -->
             <div id="chat-loading" class="p-4 border-t border-slate-700 hidden">
                 <div class="flex items-center space-x-2">
                     <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -180,6 +315,7 @@
                 </div>
             </div>
 
+            <!-- Input -->
             <div class="p-4 border-t border-slate-700">
                 <div class="flex space-x-2">
                     <input type="text" id="chat-input" placeholder="Ask a question..." class="flex-1 w-full bg-slate-700 border border-slate-600 rounded-md p-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
@@ -192,10 +328,45 @@
     </div>
 
 
+    <!-- 
+    =================================================================
+    SCRIPT SECTION - UPDATED FOR REAL API
+    =================================================================
+    -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // --- NEW: Demo User Database ---
+            // We will store the created account's email and password here.
+            // In a real app, this would be in a secure database.
+            let demoUserEmail = null;
+            let demoUserPassword = null;
+            // --- End of New ---
+
+            // Page containers
+            const loginPage = document.getElementById('login-page');
+            const calculatorPage = document.getElementById('calculator-page');
+            const createAccountPage = document.getElementById('create-account-page');
             
+            // Login elements
+            const loginForm = document.getElementById('login-form');
+            const loginBtn = document.getElementById('login-btn');
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password'); // ADD THIS
+            const togglePasswordBtn = document.getElementById('toggle-password'); // ADD THIS
+            const loginMessage = document.getElementById('login-message');
+            const goToCreateAccountBtn = document.getElementById('go-to-create-account-btn');
+
+            // Create Account elements
+            const createAccountForm = document.getElementById('create-account-form');
+            const newPasswordInput = document.getElementById('new-password');
+            const toggleNewPasswordBtn = document.getElementById('toggle-new-password'); // ADD THIS
+            const confirmPasswordInput = document.getElementById('confirm-password');
+            const toggleConfirmPasswordBtn = document.getElementById('toggle-confirm-password'); // ADD THIS
+            const goToLoginBtn = document.getElementById('go-to-login-btn');
+
             // Calculator elements
+            const logoutBtn = document.getElementById('logout-btn');
+            const welcomeEmail = document.getElementById('welcome-email');
             const calculatorForm = document.getElementById('calculator-form');
             const calculateBtn = document.getElementById('calculate-btn');
             const calcSubmitText = document.getElementById('calc-submit-text');
@@ -219,15 +390,15 @@
             const chatLoading = document.getElementById('chat-loading');
 
             // ---
-            // --- API URLS ---
-            // ---
-            // This URL points to your live Railway backend
-            const calcApiUrl = "https://credit-path-ai-production.up.railway.app/predict/batch";
-            // ---
-
-            // ---
             // --- Page & Modal Logic ---
             // ---
+
+            const showPage = (pageId) => {
+                loginPage.classList.add('hidden');
+                calculatorPage.classList.add('hidden');
+                createAccountPage.classList.add('hidden');
+                document.getElementById(pageId).classList.remove('hidden');
+            };
 
             const showModal = (message) => {
                 errorMessageText.textContent = message;
@@ -237,11 +408,126 @@
             const hideModal = () => {
                 errorModal.classList.add('hidden');
             };
+
+            // --- NEW: Password Toggle Logic ---
+            const togglePasswordVisibility = (inputEl, eyeEl, eyeSlashEl) => {
+                if (inputEl.type === 'password') {
+                    inputEl.type = 'text';
+                    eyeEl.classList.add('hidden');
+                    eyeSlashEl.classList.remove('hidden');
+                } else {
+                    inputEl.type = 'password';
+                    eyeEl.classList.remove('hidden');
+                    eyeSlashEl.classList.add('hidden');
+                }
+            };
+
+            togglePasswordBtn.addEventListener('click', () => {
+                togglePasswordVisibility(
+                    passwordInput,
+                    document.getElementById('toggle-password-eye'),
+                    document.getElementById('toggle-password-eye-slash')
+                );
+            });
+
+            toggleNewPasswordBtn.addEventListener('click', () => {
+                togglePasswordVisibility(
+                    newPasswordInput,
+                    document.getElementById('toggle-new-password-eye'),
+                    document.getElementById('toggle-new-password-eye-slash')
+                );
+            });
+
+            toggleConfirmPasswordBtn.addEventListener('click', () => {
+                togglePasswordVisibility(
+                    confirmPasswordInput,
+                    document.getElementById('toggle-confirm-password-eye'),
+                    document.getElementById('toggle-confirm-password-eye-slash')
+                );
+            });
+            // --- End of Password Toggle Logic ---
+
+
+            // ---
+            // --- Login / Logout / Create Account Logic ---
+            // ---
+
+            loginForm.addEventListener('submit', (e) => {
+                e.preventDefault(); 
+                loginMessage.classList.add('hidden');
+                
+                // Get the values from the form
+                const email = emailInput.value;
+                const password = passwordInput.value;
+
+                if (!loginForm.checkValidity()) {
+                    showModal('Please enter a valid email and password.');
+                
+                // Check if an account has even been created
+                } else if (demoUserEmail === null || demoUserPassword === null) {
+                    showModal('No account found. Please create an account first.');
+
+                // --- THIS IS THE NEW CHECK ---
+                // Check if the entered email and password match our saved ones
+                } else if (email === demoUserEmail && password === demoUserPassword) {
+                    // --- SUCCESS ---
+                    welcomeEmail.textContent = `Welcome, ${email}!`;
+                    showPage('calculator-page');
+                    loginForm.reset();
+                    resultContainer.classList.add('hidden');
+                    resultPlaceholder.classList.remove('hidden');
+                } else {
+                    // --- FAILURE ---
+                    // The password or email was wrong. Show the user's requested error.
+                    showModal('The entered email or password is incorrect.');
+                }
+            });
+            
+            createAccountForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                // Get the new email value
+                const email = document.getElementById('new-email').value;
+                const newPassword = newPasswordInput.value;
+                const confirmPassword = confirmPasswordInput.value;
+
+                if (!createAccountForm.checkValidity()) {
+                     showModal('Please fill out all fields.');
+                } else if (newPassword !== confirmPassword) {
+                    showModal('Passwords do not match. Please try again.');
+                } else {
+                    // --- NEW: Save to our "Demo Database" ---
+                    demoUserEmail = email;
+                    demoUserPassword = newPassword;
+                    // --- End of New ---
+
+                    createAccountForm.reset();
+                    showPage('login-page');
+                    loginMessage.textContent = 'Account created successfully! Please sign in.';
+                    loginMessage.classList.remove('hidden');
+                }
+            });
+
+            logoutBtn.addEventListener('click', () => {
+                showPage('login-page');
+                calculatorForm.reset();
+                closeChat();
+                loginMessage.classList.add('hidden');
+            });
+            
+            goToCreateAccountBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                showPage('create-account-page');
+            });
+
+            goToLoginBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                showPage('login-page');
+            });
             
             closeModalBtn.addEventListener('click', hideModal);
 
             // ---
-            // --- Calculator Logic ---
+            // --- Calculator Logic (NOW CONNECTED) ---
             // ---
 
             calculatorForm.addEventListener('submit', async (e) => {
@@ -267,12 +553,21 @@
                     creditSc: parseInt(formData.get('creditSc')),
                 };
 
+                // --- START OF CHANGES ---
+                // We wrap the single 'data' object in the format your API expects: { "instances": [...] }
                 const apiPayload = {
                     instances: [data]
                 };
 
+                // This is the URL where your Python backend is running.
+                // If your backend is on a different machine, replace 'localhost'.
+                const createApiUrl = "http://localhost:8000/create-account";
+                const loginApiUrl = "http://localhost:8000/login";
+                const calcApiUrl = "http://localhost:8000/predict/batch"; // Or "http://127.0.0.1:8000/predict/batch"
+
                 try {
-                    const response = await fetch(calcApiUrl, { // <-- Use the calcApiUrl
+                    // This is the real API call using fetch()
+                    const response = await fetch(calcApiUrl, { // <-- THIS WAS THE BUG
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -281,16 +576,15 @@
                     });
 
                     if (!response.ok) {
+                        // Handle server errors (e.g., 500) or validation errors (e.g., 422)
                         const errorData = await response.json();
-                        let detail = errorData.detail || 'API request failed.';
-                        if (response.status === 404) {
-                            detail = "API endpoint not found. (404)";
-                        }
-                        throw new Error(detail);
+                        // Use the 'detail' field from FastAPI's HTTPException
+                        throw new Error(errorData.detail || 'API request failed');
                     }
                     
                     const resultData = await response.json();
                     
+                    // Your API returns {"predictions": [...]}, so we get the first item
                     if (resultData.predictions && resultData.predictions.length > 0) {
                         const result = resultData.predictions[0];
                         displayResult(result);
@@ -300,10 +594,12 @@
 
                 } catch (error) {
                     console.error("Error calling backend API:", error);
+                    // Show a user-friendly error. This often happens if the backend server isn't running.
                     showModal(`Error calculating risk: ${error.message}. Is the backend server running?`);
                 } finally {
                     setLoading(false);
                 }
+                // --- END OF CHANGES ---
             });
 
             const setLoading = (isLoading) => {
@@ -320,21 +616,26 @@
                 }
             };
 
+            // --- REMOVED ---
+            // The 'mockApiCall' function was here, but we deleted it 
+            // because we are now calling the real API.
+
             const displayResult = (result) => {
                 let borderColor, textColor, riskIcon;
 
+                // The API returns 'risk_level' and 'recommended_action'
                 if (result.risk_level === "High Risk") {
                     borderColor = 'border-red-500';
                     textColor = 'text-red-300';
-                    riskIcon = `<svg class="w-16 h-16 text-red-500 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`;
+                    riskIcon = `<svg class."w-16 h-16 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`;
                 } else if (result.risk_level === "Medium Risk") {
                     borderColor = 'border-yellow-500';
                     textColor = 'text-yellow-300';
-                    riskIcon = `<svg class="w-16 h-16 text-yellow-500 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2CSS.svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>`;
+                    riskIcon = `<svg class="w-16 h-16 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2CSS.svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>`;
                 } else { // Low Risk
                     borderColor = 'border-green-500';
                     textColor = 'text-green-300';
-                    riskIcon = `<svg class="w-16 h-16 text-green-500 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`;
+                    riskIcon = `<svg class="w-16 h-16 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`;
                 }
 
                 resultContainer.innerHTML = `
@@ -411,7 +712,7 @@
                 Keep your answers concise and easy to understand.`;
                 
                 // --- API KEY ADDED ---
-                const apiKey = "AIzaSyB9-rfeW-McsTNZ5bEpHwfezCY9tWQKIeQ"; // Use your actual API key
+                const apiKey = "AIzaSyB9-rfeW-McsTNZ5bEpHwfezCY9tWQKIeQ";
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
 
                 const payload = {
@@ -474,6 +775,9 @@
                 }
             });
 
+
+            // Set initial state (show login page)
+            showPage('login-page');
         });
     </script>
 </body>
