@@ -2,7 +2,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CREDIT PATH-AI</title>
-    <!-- 1. Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* Hide scrollbar */
@@ -46,18 +45,12 @@
 </head>
 <body class="bg-slate-900 text-slate-200 font-sans min-h-screen antialiased">
 
-    <!-- 
-      PAGE 1: LOGIN PAGE 
-      (Visible by default)
-    -->
     <div id="login-page" class="flex items-center justify-center min-h-screen p-4">
         <div class="bg-slate-800 p-8 rounded-lg shadow-xl w-full max-w-md border border-slate-700">
             <h1 class="text-4xl font-bold text-white mb-2 text-center">CREDIT PATH-AI</h1>
             <p class="text-slate-400 text-center mb-8">Welcome! Please sign in.</p>
             
-            <!-- Success message after account creation -->
             <p id="login-message" class="text-green-400 text-center mb-4 hidden"></p>
-            <!-- Error message for login -->
             <p id="login-error" class="text-red-400 text-center mb-4 hidden"></p>
 
             <form id="login-form" class="space-y-6">
@@ -67,10 +60,8 @@
                 </div>
                 <div>
                     <label for="password" class="block text-sm font-medium text-slate-300 mb-1">Password</label>
-                    <!-- Add relative container -->
                     <div class="relative">
                         <input type="password" id="password" name="password" placeholder="••••••••" class="w-full bg-slate-700 border border-slate-600 rounded-md p-3 pr-10 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
-                        <!-- Add toggle button -->
                         <button type="button" id="toggle-password" class="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 hover:text-white" aria-label="Toggle password visibility">
                             <svg id="toggle-password-eye" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.478 0-8.268-2.943-9.542-7z"></path></svg>
                             <svg id="toggle-password-eye-slash" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7 1.274 4.057 5.064 7-9.542-7 .847 0 1.669.104 2.458.298l-1.05 1.05A3.001 3.001 0 009 12a3 3 0 103.875 3.825l1.05 1.05z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16.95 16.95L21.5 21.5m-3.55-2.55L12 13.05M3 3l18 18"></path></svg>
@@ -95,15 +86,10 @@
         </div>
     </div>
     
-    <!-- 
-      NEW PAGE 3: CREATE ACCOUNT PAGE 
-      (Hidden by default)
-    -->
     <div id="create-account-page" class="flex items-center justify-center min-h-screen p-4 hidden">
         <div class="bg-slate-800 p-8 rounded-lg shadow-xl w-full max-w-md border border-slate-700">
             <h1 class="text-4xl font-bold text-white mb-2 text-center">Create Account</h1>
             <p class="text-slate-400 text-center mb-8">Get started with your free account.</p>
-            <!-- Error message for create account -->
             <p id="create-error" class="text-red-400 text-center mb-4 hidden"></p>
 
             <form id="create-account-form" class="space-y-6">
@@ -113,10 +99,8 @@
                 </div>
                 <div>
                     <label for="new-password" class="block text-sm font-medium text-slate-300 mb-1">New Password</label>
-                    <!-- Add relative container -->
                     <div class="relative">
                         <input type="password" id="new-password" name="new-password" placeholder="••••••••" class="w-full bg-slate-700 border border-slate-600 rounded-md p-3 pr-10 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
-                        <!-- Add toggle button -->
                         <button type="button" id="toggle-new-password" class="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 hover:text-white" aria-label="Toggle new password visibility">
                             <svg id="toggle-new-password-eye" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.478 0-8.268-2.943-9.542-7z"></path></svg>
                             <svg id="toggle-new-password-eye-slash" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7 1.274 4.057 5.064 7-9.542-7 .847 0 1.669.104 2.458.298l-1.05 1.05A3.001 3.001 0 009 12a3 3 0 103.875 3.825l1.05 1.05z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16.95 16.95L21.5 21.5m-3.55-2.55L12 13.05M3 3l18 18"></path></svg>
@@ -125,10 +109,8 @@
                 </div>
                 <div>
                     <label for="confirm-password" class="block text-sm font-medium text-slate-300 mb-1">Confirm New Password</label>
-                    <!-- Add relative container -->
                     <div class="relative">
                         <input type="password" id="confirm-password" name="confirm-password" placeholder="••••••••" class="w-full bg-slate-700 border border-slate-600 rounded-md p-3 pr-10 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
-                        <!-- Add toggle button -->
                         <button type="button" id="toggle-confirm-password" class="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 hover:text-white" aria-label="Toggle confirm password visibility">
                             <svg id="toggle-confirm-password-eye" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.478 0-8.268-2.943-9.542-7z"></path></svg>
                             <svg id="toggle-confirm-password-eye-slash" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7 1.274 4.057 5.064 7-9.542-7 .847 0 1.669.104 2.458.298l-1.05 1.05A3.001 3.001 0 009 12a3 3 0 103.875 3.825l1.05 1.05z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16.95 16.95L21.5 21.5m-3.55-2.55L12 13.05M3 3l18 18"></path></svg>
@@ -154,12 +136,7 @@
     </div>
 
 
-    <!-- 
-      PAGE 2: CALCULATOR / DASHBOARD PAGE 
-      (Hidden by default)
-    -->
     <div id="calculator-page" class="min-h-screen hidden relative">
-        <!-- Header / Navbar -->
         <header class="bg-slate-800 border-b border-slate-700">
             <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between items-center h-16">
@@ -176,11 +153,9 @@
             </nav>
         </header>
 
-        <!-- Main Content -->
         <main class="max-w-7xl mx-auto p-4 sm:px-6 lg:px-8 py-8">
             <div class="flex flex-col lg:flex-row gap-8">
                 
-                <!-- Left Column: Form -->
                 <div class="lg:w-2/3 bg-slate-800 p-6 md:p-8 rounded-lg shadow-xl border border-slate-700">
                     <h2 class="text-3xl font-semibold text-white mb-6">Calculate Your Credit Risk</h2>
                     <p class="text-slate-400 mb-8">
@@ -188,7 +163,6 @@
                     </p>
                     
                     <form id="calculator-form" class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-6">
-                        <!-- 8 Fields from main.py -->
                         <div>
                             <label class="block text-sm font-medium text-slate-300 mb-1">Home Ownership</label>
                             <select name="homeOwn" class="w-full bg-slate-700 border border-slate-600 rounded-md p-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
@@ -235,7 +209,6 @@
                             <input type="number" name="creditSc" placeholder="300 - 850" min="300" max="850" class="w-full bg-slate-700 border border-slate-600 rounded-md p-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
                         </div>
 
-                        <!-- Submit Button -->
                         <div class="md:col-span-2 mt-6">
                              <button id="calculate-btn" type="submit" class="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-3 px-6 rounded-lg text-lg transition-colors flex items-center justify-center gap-3">
                                 <svg id="calc-submit-icon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v.01M9 10h.01M9 13h.01M12 10h.01M12 13h.01M15 10h.01M15 13h.01M9 17h.01M12 17h.01M15 17h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
@@ -249,13 +222,10 @@
                     </form>
                 </div>
                 
-                <!-- Right Column: Result -->
                 <div class="lg:w-1/3">
                     <div id="result-container" class="bg-slate-800 p-6 md:p-8 rounded-lg shadow-xl border border-slate-700 sticky top-24 hidden">
-                        <!-- Result will be injected here -->
-                    </div>
+                        </div>
                     
-                    <!-- Placeholder for result -->
                     <div id="result-placeholder" class="bg-slate-800 p-6 md:p-8 rounded-lg shadow-xl border border-dashed border-slate-600 sticky top-24 text-center">
                         <svg class="w-16 h-16 mx-auto mb-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 17v-2m3 2v-4m3 4v-6m2 10V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2h14a2 2 0 002-2z"></path></svg>
                         <h3 class="text-xl font-semibold text-slate-300 mb-2">Your Result</h3>
@@ -266,13 +236,11 @@
             </div>
         </main>
 
-        <!-- AI CHAT: Floating Button -->
         <button id="chat-btn" title="Ask Credit Coach" class="fixed bottom-6 right-6 bg-indigo-600 hover:bg-indigo-500 text-white w-16 h-16 rounded-full shadow-xl flex items-center justify-center transition-transform transform hover:scale-110">
             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.54 15.266 3 13.684 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
         </button>
     </div>
 
-    <!-- Custom Modal for Errors -->
     <div id="error-modal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50 hidden">
         <div class="bg-slate-800 rounded-lg shadow-xl max-w-sm w-full p-6 text-center border border-slate-700">
             <svg class="w-16 h-16 mx-auto mb-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
@@ -284,10 +252,8 @@
         </div>
     </div>
 
-    <!-- AI CHAT: Modal -->
     <div id="chat-modal" class="fixed bottom-24 right-6 w-full max-w-md bg-slate-800 rounded-lg shadow-2xl border border-slate-700 hidden" style="height: 60vh;">
         <div class="flex flex-col h-full">
-            <!-- Header -->
             <div class="flex justify-between items-center p-4 border-b border-slate-700">
                 <h3 class="text-lg font-semibold text-white">Ask the Credit Coach</h3>
                 <button id="close-chat-btn" class="text-slate-400 hover:text-white">
@@ -295,28 +261,22 @@
                 </button>
             </div>
             
-            <!-- Chat History -->
             <div id="chat-history" class="flex-1 p-4 overflow-y-auto flex flex-col space-y-2">
-                <!-- Welcome Message -->
                 <div class="chat-bubble bot">
                     Hello! I'm your AI Credit Coach. Ask me anything about credit scores, loans, or financial health.
                 </div>
-                <!-- Chat messages will be added here -->
-            </div>
+                </div>
             
-            <!-- Loading Indicator -->
             <div id="chat-loading" class="p-4 border-t border-slate-700 hidden">
                 <div class="flex items-center space-x-2">
                     <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-Signature:
                     </svg>
                     <span class="text-sm text-slate-400">Coach is thinking...</span>
                 </div>
             </div>
 
-            <!-- Input -->
             <div class="p-4 border-t border-slate-700">
                 <div class="flex space-x-2">
                     <input type="text" id="chat-input" placeholder="Ask a question..." class="flex-1 w-full bg-slate-700 border border-slate-600 rounded-md p-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
@@ -329,11 +289,6 @@ Signature:
     </div>
 
 
-    <!-- 
-    =================================================================
-    SCRIPT SECTION - Real Database Logic
-    =================================================================
-    -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             
@@ -388,13 +343,12 @@ Signature:
             const chatLoading = document.getElementById('chat-loading');
 
             // ---
-            // --- API URLS ---
+            // --- API URLS (THE FIX IS HERE) ---
             // ---
-            // This is the "Production" version for Vercel deployment.
-            // For local testing, change these to "http://localhost:8000/..."
-            const createApiUrl = "/create-account";
-            const loginApiUrl = "/login";
-            const calcApiUrl = "/predict/batch";
+            // These URLs now point to your live Railway backend
+            const createApiUrl = "https://credit-path-ai-production.up.railway.app/create-account";
+            const loginApiUrl = "https://credit-path-ai-production.up.railway.app/login";
+            const calcApiUrl = "https://credit-path-ai-production.up.railway.app/predict/batch";
             // ---
 
             // ---
@@ -473,15 +427,26 @@ Signature:
                 const email = emailInput.value;
                 const password = passwordInput.value;
 
+                // --- NEW LOGIN LOGIC ---
+                // The /login endpoint expects 'application/x-www-form-urlencoded'
+                // which is what OAuth2PasswordRequestForm uses.
+                const body = new URLSearchParams();
+                body.append('username', email);
+                body.append('password', password);
+
                 try {
                     const response = await fetch(loginApiUrl, {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ email: email, password: password })
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: body
                     });
 
                     if (response.ok) {
                         // --- SUCCESS ---
+                        const data = await response.json();
+                        // You can save the token if needed:
+                        // localStorage.setItem('accessToken', data.access_token);
+
                         welcomeEmail.textContent = `Welcome, ${email}!`;
                         showPage('calculator-page');
                         loginForm.reset();
@@ -492,9 +457,10 @@ Signature:
                         const errorData = await response.json();
                         let detail = errorData.detail || 'Login failed. Please try again.';
                         
-                        // Handle Vercel's "Not Found" error specifically
                         if (response.status === 404) {
                             detail = "API endpoint not found. (404)";
+                        } else if (response.status === 401) {
+                            detail = "Incorrect email or password.";
                         }
 
                         loginError.textContent = detail;
@@ -543,9 +509,10 @@ Signature:
                         const errorData = await response.json();
                         let detail = errorData.detail || 'Could not create account.';
                         
-                        // Handle Vercel's "Not Found" error specifically
                         if (response.status === 404) {
                             detail = "API endpoint not found. (404)";
+                        } else if (response.status === 400) {
+                            detail = "Email already registered.";
                         }
 
                         createError.textContent = detail;
@@ -560,6 +527,7 @@ Signature:
             });
 
             logoutBtn.addEventListener('click', () => {
+                // localStorage.removeItem('accessToken'); // Clear token on logout
                 showPage('login-page');
                 calculatorForm.reset();
                 closeChat();
@@ -613,11 +581,16 @@ Signature:
                     instances: [data]
                 };
 
+                // Add this: get the token to authorize the request
+                // const token = localStorage.getItem('accessToken');
+
                 try {
                     const response = await fetch(calcApiUrl, { // <-- Use the calcApiUrl
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
+                            // Add authorization if your backend requires it
+                            // 'Authorization': `Bearer ${token}` 
                         },
                         body: JSON.stringify(apiPayload)
                     });
@@ -625,9 +598,10 @@ Signature:
                     if (!response.ok) {
                         const errorData = await response.json();
                         let detail = errorData.detail || 'API request failed.';
-                        // Handle Vercel's "Not Found" error specifically
                         if (response.status === 404) {
                             detail = "API endpoint not found. (404)";
+                        } else if (response.status === 401) {
+                            detail = "You are not authorized. Please log in again.";
                         }
                         throw new Error(detail);
                     }
@@ -669,15 +643,15 @@ Signature:
                 if (result.risk_level === "High Risk") {
                     borderColor = 'border-red-500';
                     textColor = 'text-red-300';
-                    riskIcon = `<svg class="w-16 h-16 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`;
+                    riskIcon = `<svg class="w-16 h-16 text-red-500 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`;
                 } else if (result.risk_level === "Medium Risk") {
                     borderColor = 'border-yellow-500';
                     textColor = 'text-yellow-300';
-                    riskIcon = `<svg class="w-16 h-16 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2CSS.svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>`;
+                    riskIcon = `<svg class="w-16 h-16 text-yellow-500 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2CSS.svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>`;
                 } else { // Low Risk
                     borderColor = 'border-green-500';
                     textColor = 'text-green-300';
-                    riskIcon = `<svg class="w-16 h-16 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`;
+                    riskIcon = `<svg class="w-16 h-16 text-green-500 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`;
                 }
 
                 resultContainer.innerHTML = `
