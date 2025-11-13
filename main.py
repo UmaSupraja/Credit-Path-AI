@@ -25,11 +25,10 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# --- Add CORS Middleware ---
-# This allows your frontend (GitHub Pages) to talk to this backend
+# --- Add CORS Middleware (FIXED: ALLOW ALL ORIGINS) ---
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://UmaSupraja.github.io"], 
+    allow_origins=["*"], # <--- FINAL FIX: Allows all domains to connect
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
