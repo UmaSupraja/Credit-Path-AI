@@ -1,4 +1,4 @@
-# --- main.py (Simple Backend) ---
+# --- final_main.py ---
 import logging
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
@@ -26,16 +26,16 @@ app = FastAPI(
 )
 
 # --- Add CORS Middleware ---
-# This allows your frontend (running on GitHub Pages) to talk to this backend
+# This allows your frontend (GitHub Pages) to talk to this backend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://UmaSupraja.github.io"],  # Your GitHub Pages URL
+    allow_origins=["https://UmaSupraja.github.io"], 
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# --- Pydantic Model for Input Validation (Using the 8 Metrics) ---
+# --- Pydantic Model for Input Validation (The 8 Metrics) ---
 class Borrower(BaseModel):
     homeOwn: str
     annualIncome: float = Field(..., gt=0, description="Annual Income in dollars")
@@ -51,7 +51,6 @@ class BatchPredictionRequest(BaseModel):
 
 # --- ML Model & Recommendation Logic ---
 def predict_default_probability(data: Borrower) -> float:
-    """Simulates a model prediction based on a simplified risk score."""
     risk_score = 0.0
     risk_score += (850 - data.creditSc) / 850
     
@@ -67,7 +66,6 @@ def predict_default_probability(data: Borrower) -> float:
     return probability
 
 def map_to_recommendation(probability: float) -> (str, str):
-    """Maps a prediction probability to a recommended action."""
     if probability >= 0.65:
         return "High Risk", "Priority Collection / Loan Restructure"
     elif 0.35 <= probability < 0.65:
@@ -75,7 +73,7 @@ def map_to_recommendation(probability: float) -> (str, str):
     else:
         return "Low Risk", "Standard Reminder"
 
-# --- Serve Frontend ---
+# --- Serve Frontend (Removed database dependency) ---
 @app.get("/", response_class=FileResponse)
 async def read_index():
     static_dir = os.path.join(os.path.dirname(__file__), "static")
@@ -88,13 +86,11 @@ async def read_index():
 # --- NEW HEALTH CHECK ENDPOINT ---
 @app.get("/health")
 async def health_check():
-    """Simple health check endpoint to confirm the API is running."""
     return {"status": "OK", "message": "CreditPathAI API is running."}
 
 # --- API Endpoint for Batch Prediction ---
 @app.post("/predict/batch")
 async def batch_predict(request: BatchPredictionRequest):
-    """Accepts a batch of borrower data, predicts risk, and logs the transaction."""
     try:
         predictions = []
         if not request.instances:
