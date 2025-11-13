@@ -1,4 +1,4 @@
-# --- NEW main.py (No Database) ---
+# Forcing Railway to update
 import logging
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
@@ -29,7 +29,7 @@ app = FastAPI(
 # This allows your frontend (running on a different port) to talk to this backend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://UmaSupraja.github.io"],  # Your GitHub Pages URL
+    allow_origins=["*"],  # Allows all origins (for development)
     allow_credentials=True,
     allow_methods=["*"],  # Allows all methods (GET, POST, etc.)
     allow_headers=["*"],  # Allows all headers
@@ -80,6 +80,8 @@ def map_to_recommendation(probability: float) -> (str, str):
         return "Low Risk", "Standard Reminder"
 
 # --- Serve Frontend ---
+# This endpoint is no longer strictly needed if you open index.html directly,
+# but it's good practice.
 @app.get("/", response_class=FileResponse)
 async def read_index():
     # This assumes your index.html is in a folder named 'static'
