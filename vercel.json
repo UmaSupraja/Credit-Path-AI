@@ -1,20 +1,22 @@
 {
   "version": 2,
   "builds": [
-    { "src": "main.py", "use": "@vercel/python" },
-    { "src": "index.html", "use": "@vercel/static" }
+    {
+      "src": "main.py",
+      "use": "@vercel/python"
+    },
+    {
+      "src": "index.html",
+      "use": "@vercel/static"
+    }
   ],
   "routes": [
     {
-      "src": "^/api(?:/.*)?$",
+      "src": "/(api|health|predict/batch|login|create-account)",
       "dest": "main.py"
     },
     {
-      "src": "^/$",
-      "dest": "index.html"
-    },
-    {
-      "src": "^/(.*)$",
+      "src": "/(.*)",
       "dest": "index.html"
     }
   ]
