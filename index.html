@@ -45,109 +45,12 @@
 </head>
 <body class="bg-slate-900 text-slate-200 font-sans min-h-screen antialiased">
 
-    <div id="login-page" class="flex items-center justify-center min-h-screen p-4">
-        <div class="bg-slate-800 p-8 rounded-lg shadow-xl w-full max-w-md border border-slate-700">
-            <h1 class="text-4xl font-bold text-white mb-2 text-center">CREDIT PATH-AI</h1>
-            <p class="text-slate-400 text-center mb-8">Welcome! Please sign in.</p>
-            
-            <p id="login-message" class="text-green-400 text-center mb-4 hidden"></p>
-            <p id="login-error" class="text-red-400 text-center mb-4 hidden"></p>
-
-            <form id="login-form" class="space-y-6">
-                <div>
-                    <label for="email" class="block text-sm font-medium text-slate-300 mb-1">Email</label>
-                    <input type="email" id="email" name="email" placeholder="user@example.com" class="w-full bg-slate-700 border border-slate-600 rounded-md p-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
-                </div>
-                <div>
-                    <label for="password" class="block text-sm font-medium text-slate-300 mb-1">Password</label>
-                    <div class="relative">
-                        <input type="password" id="password" name="password" placeholder="••••••••" class="w-full bg-slate-700 border border-slate-600 rounded-md p-3 pr-10 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
-                        <button type="button" id="toggle-password" class="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 hover:text-white" aria-label="Toggle password visibility">
-                            <svg id="toggle-password-eye" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.478 0-8.268-2.943-9.542-7z"></path></svg>
-                            <svg id="toggle-password-eye-slash" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7 1.274 4.057 5.064 7-9.542-7 .847 0 1.669.104 2.458.298l-1.05 1.05A3.001 3.001 0 009 12a3 3 0 103.875 3.825l1.05 1.05z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16.95 16.95L21.5 21.5m-3.55-2.55L12 13.05M3 3l18 18"></path></svg>
-                        </button>
-                    </div>
-                </div>
-                <div>
-                    <button id="login-btn" type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 px-6 rounded-lg text-lg transition-colors">
-                        Sign In
-                    </button>
-                </div>
-            </form>
-
-            <div class="text-center mt-6">
-                <p class="text-slate-400">
-                    New here? 
-                    <button id="go-to-create-account-btn" class="font-medium text-indigo-400 hover:text-indigo-300 underline">
-                        Create an account
-                    </button>
-                </p>
-            </div>
-        </div>
-    </div>
-    
-    <div id="create-account-page" class="flex items-center justify-center min-h-screen p-4 hidden">
-        <div class="bg-slate-800 p-8 rounded-lg shadow-xl w-full max-w-md border border-slate-700">
-            <h1 class="text-4xl font-bold text-white mb-2 text-center">Create Account</h1>
-            <p class="text-slate-400 text-center mb-8">Get started with your free account.</p>
-            <p id="create-error" class="text-red-400 text-center mb-4 hidden"></p>
-
-            <form id="create-account-form" class="space-y-6">
-                <div>
-                    <label for="new-email" class="block text-sm font-medium text-slate-300 mb-1">Email</label>
-                    <input type="email" id="new-email" name="new-email" placeholder="user@example.com" class="w-full bg-slate-700 border border-slate-600 rounded-md p-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
-                </div>
-                <div>
-                    <label for="new-password" class="block text-sm font-medium text-slate-300 mb-1">New Password</label>
-                    <div class="relative">
-                        <input type="password" id="new-password" name="new-password" placeholder="••••••••" class="w-full bg-slate-700 border border-slate-600 rounded-md p-3 pr-10 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
-                        <button type="button" id="toggle-new-password" class="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 hover:text-white" aria-label="Toggle new password visibility">
-                            <svg id="toggle-new-password-eye" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.478 0-8.268-2.943-9.542-7z"></path></svg>
-                            <svg id="toggle-new-password-eye-slash" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7 1.274 4.057 5.064 7-9.542-7 .847 0 1.669.104 2.458.298l-1.05 1.05A3.001 3.001 0 009 12a3 3 0 103.875 3.825l1.05 1.05z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16.95 16.95L21.5 21.5m-3.55-2.55L12 13.05M3 3l18 18"></path></svg>
-                        </button>
-                    </div>
-                </div>
-                <div>
-                    <label for="confirm-password" class="block text-sm font-medium text-slate-300 mb-1">Confirm New Password</label>
-                    <div class="relative">
-                        <input type="password" id="confirm-password" name="confirm-password" placeholder="••••••••" class="w-full bg-slate-700 border border-slate-600 rounded-md p-3 pr-10 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
-                        <button type="button" id="toggle-confirm-password" class="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 hover:text-white" aria-label="Toggle confirm password visibility">
-                            <svg id="toggle-confirm-password-eye" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.478 0-8.268-2.943-9.542-7z"></path></svg>
-                            <svg id="toggle-confirm-password-eye-slash" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7 1.274 4.057 5.064 7-9.542-7 .847 0 1.669.104 2.458.298l-1.05 1.05A3.001 3.001 0 009 12a3 3 0 103.875 3.825l1.05 1.05z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16.95 16.95L21.5 21.5m-3.55-2.55L12 13.05M3 3l18 18"></path></svg>
-                        </button>
-                    </div>
-                </div>
-                <div>
-                    <button id="create-account-btn" type="submit" class="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-3 px-6 rounded-lg text-lg transition-colors">
-                        Create Account
-                    </button>
-                </div>
-            </form>
-            
-            <div class="text-center mt-6">
-                <p class="text-slate-400">
-                    Already have an account? 
-                    <button id="go-to-login-btn" class="font-medium text-indigo-400 hover:text-indigo-300 underline">
-                        Sign in
-                    </button>
-                </p>
-            </div>
-        </div>
-    </div>
-
-
-    <div id="calculator-page" class="min-h-screen hidden relative">
+    <div id="calculator-page" class="min-h-screen relative">
         <header class="bg-slate-800 border-b border-slate-700">
             <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between items-center h-16">
                     <div class="flex-shrink-0 flex items-center">
                         <h1 class="text-2xl font-bold text-white">CREDIT PATH-AI</h1>
-                    </div>
-                    <div class="flex items-center">
-                        <span class="text-slate-300 mr-4 hidden sm:block" id="welcome-email">Welcome!</span>
-                        <button id="logout-btn" class="bg-red-600 hover:bg-red-500 text-white font-semibold py-2 px-4 rounded-lg transition-colors text-sm">
-                            Logout
-                        </button>
                     </div>
                 </div>
             </nav>
@@ -292,34 +195,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             
-            // Page containers
-            const loginPage = document.getElementById('login-page');
-            const calculatorPage = document.getElementById('calculator-page');
-            const createAccountPage = document.getElementById('create-account-page');
-            
-            // Login elements
-            const loginForm = document.getElementById('login-form');
-            const loginBtn = document.getElementById('login-btn');
-            const emailInput = document.getElementById('email');
-            const passwordInput = document.getElementById('password'); 
-            const togglePasswordBtn = document.getElementById('toggle-password'); 
-            const loginMessage = document.getElementById('login-message');
-            const loginError = document.getElementById('login-error'); // New
-            const goToCreateAccountBtn = document.getElementById('go-to-create-account-btn'); // <-- *** FIX IS HERE ***
-
-            // Create Account elements
-            const createAccountForm = document.getElementById('create-account-form');
-            const newEmailInput = document.getElementById('new-email'); // New
-            const newPasswordInput = document.getElementById('new-password');
-            const toggleNewPasswordBtn = document.getElementById('toggle-new-password'); 
-            const confirmPasswordInput = document.getElementById('confirm-password');
-            const toggleConfirmPasswordBtn = document.getElementById('toggle-confirm-password'); 
-            const goToLoginBtn = document.getElementById('go-to-login-btn');
-            const createError = document.getElementById('create-error'); // New
-
             // Calculator elements
-            const logoutBtn = document.getElementById('logout-btn');
-            const welcomeEmail = document.getElementById('welcome-email');
             const calculatorForm = document.getElementById('calculator-form');
             const calculateBtn = document.getElementById('calculate-btn');
             const calcSubmitText = document.getElementById('calc-submit-text');
@@ -343,24 +219,15 @@
             const chatLoading = document.getElementById('chat-loading');
 
             // ---
-            // --- API URLS (THE FIX IS HERE) ---
+            // --- API URLS ---
             // ---
-            // These URLs now point to your live Railway backend
-            const createApiUrl = "https://credit-path-ai-production.up.railway.app/create-account";
-            const loginApiUrl = "https://credit-path-ai-production.up.railway.app/login";
+            // This URL points to your live Railway backend
             const calcApiUrl = "https://credit-path-ai-production.up.railway.app/predict/batch";
             // ---
 
             // ---
             // --- Page & Modal Logic ---
             // ---
-
-            const showPage = (pageId) => {
-                loginPage.classList.add('hidden');
-                calculatorPage.classList.add('hidden');
-                createAccountPage.classList.add('hidden');
-                document.getElementById(pageId).classList.remove('hidden');
-            };
 
             const showModal = (message) => {
                 errorMessageText.textContent = message;
@@ -370,188 +237,11 @@
             const hideModal = () => {
                 errorModal.classList.add('hidden');
             };
-
-            // --- NEW: Password Toggle Logic ---
-            const togglePasswordVisibility = (inputEl, eyeEl, eyeSlashEl) => {
-                if (inputEl.type === 'password') {
-                    inputEl.type = 'text';
-                    eyeEl.classList.add('hidden');
-                    eyeSlashEl.classList.remove('hidden');
-                } else {
-                    inputEl.type = 'password';
-                    eyeEl.classList.remove('hidden');
-                    eyeSlashEl.classList.add('hidden');
-                }
-            };
-
-            togglePasswordBtn.addEventListener('click', () => {
-                togglePasswordVisibility(
-                    passwordInput,
-                    document.getElementById('toggle-password-eye'),
-                    document.getElementById('toggle-password-eye-slash')
-                );
-            });
-
-            toggleNewPasswordBtn.addEventListener('click', () => {
-                togglePasswordVisibility(
-                    newPasswordInput,
-                    document.getElementById('toggle-new-password-eye'),
-                    document.getElementById('toggle-new-password-eye-slash')
-                );
-            });
-
-            toggleConfirmPasswordBtn.addEventListener('click', () => {
-                togglePasswordVisibility(
-                    confirmPasswordInput,
-                    document.getElementById('toggle-confirm-password-eye'),
-                    document.getElementById('toggle-confirm-password-eye-slash')
-                );
-            });
-            // --- End of Password Toggle Logic ---
-
-
-            // ---
-            // --- NEW: Real Login / Logout / Create Account Logic ---
-            // ---
-
-            loginForm.addEventListener('submit', async (e) => {
-                e.preventDefault(); 
-                loginMessage.classList.add('hidden');
-                loginError.classList.add('hidden');
-                
-                if (!loginForm.checkValidity()) {
-                    showModal('Please enter a valid email and password.');
-                    return;
-                }
-
-                const email = emailInput.value;
-                const password = passwordInput.value;
-
-                // --- NEW LOGIN LOGIC ---
-                // The /login endpoint expects 'application/x-www-form-urlencoded'
-                // which is what OAuth2PasswordRequestForm uses.
-                const body = new URLSearchParams();
-                body.append('username', email);
-                body.append('password', password);
-
-                try {
-                    const response = await fetch(loginApiUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                        body: body
-                    });
-
-                    if (response.ok) {
-                        // --- SUCCESS ---
-                        const data = await response.json();
-                        // You can save the token if needed:
-                        // localStorage.setItem('accessToken', data.access_token);
-
-                        welcomeEmail.textContent = `Welcome, ${email}!`;
-                        showPage('calculator-page');
-                        loginForm.reset();
-                        resultContainer.classList.add('hidden');
-                        resultPlaceholder.classList.remove('hidden');
-                    } else {
-                        // --- FAILURE ---
-                        const errorData = await response.json();
-                        let detail = errorData.detail || 'Login failed. Please try again.';
-                        
-                        if (response.status === 404) {
-                            detail = "API endpoint not found. (404)";
-                        } else if (response.status === 401) {
-                            detail = "Incorrect email or password.";
-                        }
-
-                        loginError.textContent = detail;
-                        loginError.classList.remove('hidden');
-                    }
-                } catch (error) {
-                    console.error("Login error:", error);
-                    loginError.textContent = 'Could not connect to the server. Please try again later.';
-                    loginError.classList.remove('hidden');
-                }
-            });
-            
-            createAccountForm.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                createError.classList.add('hidden');
-
-                const email = newEmailInput.value;
-                const newPassword = newPasswordInput.value;
-                const confirmPassword = confirmPasswordInput.value;
-
-                if (!createAccountForm.checkValidity()) {
-                     showModal('Please fill out all fields.');
-                     return;
-                }
-                if (newPassword !== confirmPassword) {
-                    showModal('Passwords do not match. Please try again.');
-                    return;
-                }
-
-                try {
-                    const response = await fetch(createApiUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ email: email, password: newPassword })
-                    });
-
-                    if (response.ok) {
-                        // --- SUCCESS ---
-                        createAccountForm.reset();
-                        showPage('login-page');
-                        loginError.classList.add('hidden');
-                        loginMessage.textContent = 'Account created successfully! Please sign in.';
-                        loginMessage.classList.remove('hidden');
-                    } else {
-                        // --- FAILURE ---
-                        const errorData = await response.json();
-                        let detail = errorData.detail || 'Could not create account.';
-                        
-                        if (response.status === 404) {
-                            detail = "API endpoint not found. (404)";
-                        } else if (response.status === 400) {
-                            detail = "Email already registered.";
-                        }
-
-                        createError.textContent = detail;
-                        createError.classList.remove('hidden');
-                    }
-
-                } catch (error) {
-                    console.error("Create account error:", error);
-                    createError.textContent = 'Could not connect to the server. Please try again later.';
-                    createError.classList.remove('hidden');
-                }
-            });
-
-            logoutBtn.addEventListener('click', () => {
-                // localStorage.removeItem('accessToken'); // Clear token on logout
-                showPage('login-page');
-                calculatorForm.reset();
-                closeChat();
-                loginMessage.classList.add('hidden');
-                loginError.classList.add('hidden');
-            });
-            
-            goToCreateAccountBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                loginError.classList.add('hidden');
-                loginMessage.classList.add('hidden');
-                showPage('create-account-page');
-            });
-
-            goToLoginBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                createError.classList.add('hidden');
-                showPage('login-page');
-            });
             
             closeModalBtn.addEventListener('click', hideModal);
 
             // ---
-            // --- Calculator Logic (Remains the same) ---
+            // --- Calculator Logic ---
             // ---
 
             calculatorForm.addEventListener('submit', async (e) => {
@@ -581,16 +271,11 @@
                     instances: [data]
                 };
 
-                // Add this: get the token to authorize the request
-                // const token = localStorage.getItem('accessToken');
-
                 try {
                     const response = await fetch(calcApiUrl, { // <-- Use the calcApiUrl
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
-                            // Add authorization if your backend requires it
-                            // 'Authorization': `Bearer ${token}` 
                         },
                         body: JSON.stringify(apiPayload)
                     });
@@ -600,8 +285,6 @@
                         let detail = errorData.detail || 'API request failed.';
                         if (response.status === 404) {
                             detail = "API endpoint not found. (404)";
-                        } else if (response.status === 401) {
-                            detail = "You are not authorized. Please log in again.";
                         }
                         throw new Error(detail);
                     }
@@ -791,9 +474,6 @@
                 }
             });
 
-
-            // Set initial state (show login page)
-            showPage('login-page');
         });
     </script>
 </body>
