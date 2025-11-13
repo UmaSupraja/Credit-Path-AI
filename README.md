@@ -26,6 +26,12 @@ Railway.app
 
 Live (Runs the risk calculation logic)
 
+Backend (API/Calculator)
+
+Railway.app
+
+Live (Runs the risk calculation logic)
+
 Live Website Link: https://UmaSupraja.github.io/Credit-Path-AI/
 
 (Note: The live API uses a lightweight Python model for stability and speed, as the full-scale model files are not deployed.)
@@ -147,4 +153,5 @@ open index.html
 
 
 (The frontend automatically uses the local API address when running the file directly.)
+
 
