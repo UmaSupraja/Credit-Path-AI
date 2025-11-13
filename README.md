@@ -1,8 +1,8 @@
-## CreditPath-AI: Loan Default Risk Prediction 
+# CreditPath-AI: Loan Default Risk Prediction 
 
 An AI-powered loan default risk prediction system leveraging machine learning to help banks make data-driven lending decisions. Built with LightGBM, achieving 99.07% AUC-ROC accuracy in the theoretical model.
 
-#### 🚀 Live Deployment & Overview
+### 🚀 Live Deployment & Overview
 
 This project is configured as a stable, split full-stack web application.
 
@@ -116,7 +116,7 @@ Credit-Path-AI/
 └── index.html              # Frontend UI, Demo Login/Logout logic, and API call configuration.
 
 
-####🛠️ How to Run This Project Locally
+### 🛠️ How to Run This Project Locally
 
 1. Prepare the Python Environment
 
@@ -147,3 +147,4 @@ open index.html
 
 
 (The frontend automatically uses the local API address when running the file directly.)
+
