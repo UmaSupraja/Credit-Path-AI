@@ -389,14 +389,11 @@
             // ---
             // --- API URLS ---
             // ---
-            // This is the "Local Testing" version.
-            // For Vercel, these must be changed back to:
-            // const createApiUrl = "/create-account";
-            // const loginApiUrl = "/login";
-            // const calcApiUrl = "/predict/batch";
-            const createApiUrl = "http://localhost:8000/create-account";
-            const loginApiUrl = "http://localhost:8000/login";
-            const calcApiUrl = "http://localhost:8000/predict/batch";
+            // This is the "Production" version for Vercel deployment.
+            // For local testing, change these to "http://localhost:8000/..."
+            const createApiUrl = "/create-account";
+            const loginApiUrl = "/login";
+            const calcApiUrl = "/predict/batch";
             // ---
 
             // ---
@@ -492,7 +489,14 @@
                     } else {
                         // --- FAILURE ---
                         const errorData = await response.json();
-                        loginError.textContent = errorData.detail || 'Login failed. Please try again.';
+                        let detail = errorData.detail || 'Login failed. Please try again.';
+                        
+                        // Handle Vercel's "Not Found" error specifically
+                        if (response.status === 404) {
+                            detail = "API endpoint not found. (404)";
+                        }
+
+                        loginError.textContent = detail;
                         loginError.classList.remove('hidden');
                     }
                 } catch (error) {
@@ -536,7 +540,14 @@
                     } else {
                         // --- FAILURE ---
                         const errorData = await response.json();
-                        createError.textContent = errorData.detail || 'Could not create account.';
+                        let detail = errorData.detail || 'Could not create account.';
+                        
+                        // Handle Vercel's "Not Found" error specifically
+                        if (response.status === 404) {
+                            detail = "API endpoint not found. (404)";
+                        }
+
+                        createError.textContent = detail;
                         createError.classList.remove('hidden');
                     }
 
@@ -612,7 +623,12 @@
 
                     if (!response.ok) {
                         const errorData = await response.json();
-                        throw new Error(errorData.detail || 'API request failed');
+                        let detail = errorData.detail || 'API request failed.';
+                        // Handle Vercel's "Not Found" error specifically
+                        if (response.status === 404) {
+                            detail = "API endpoint not found. (404)";
+                        }
+                        throw new Error(detail);
                     }
                     
                     const resultData = await response.json();
