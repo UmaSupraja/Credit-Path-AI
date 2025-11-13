@@ -1,8 +1,9 @@
+# main.py
 import logging
 import os
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field, EmailStr
-from typing import List
+from typing import List, Tuple
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 
@@ -11,24 +12,17 @@ import databases
 from passlib.context import CryptContext
 
 # --- Database Setup ---
-# This will read the "DATABASE_URL" from your Vercel Environment Variables
-# If it's not found (like when testing locally), it will use a temporary in-memory-only database.
 DATABASE_URL = os.environ.get("DATABASE_URL", "sqlite:///./test.db")
 database = databases.Database(DATABASE_URL)
 
-# This is for hashing passwords
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 # --- Database Table Setup ---
-# This defines what our 'users' table will look like
 from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String
 
-# Use SQLAlchemy (required by 'databases' library) to define the table structure
-# We need to add a check for "sqlite" for local testing
 if DATABASE_URL.startswith("sqlite"):
     engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
 else:
-    # This is for Postgres
     engine = create_engine(DATABASE_URL)
 
 metadata = MetaData()
@@ -40,59 +34,69 @@ users = Table(
     Column("email", String(120), unique=True, index=True),
     Column("hashed_password", String(255)),
 )
-# Create the table if it doesn't exist
-metadata.create_all(engine)
 
+# create tables if missing (safe to call in many environments)
+try:
+    metadata.create_all(engine)
+except Exception:
+    # In some readonly/protected envs this may fail; we'll continue so the app can start and surface DB errors at runtime.
+    pass
 
-# --- Setup Logging ---
+# --- Setup Logging (robust for serverless / read-only FS) ---
+log_handlers = [logging.StreamHandler()]
+
+# Try adding a FileHandler if writable; ignore failures to prevent crashes during startup
+try:
+    fh = logging.FileHandler("predictions.log")
+    log_handlers.insert(0, fh)
+except Exception:
+    # file logging unavailable in this environment, continue with stream only
+    pass
+
 logging.basicConfig(
     level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.FileHandler("predictions.log"),
-        logging.StreamHandler()
-    ]
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    handlers=log_handlers,
 )
 logger = logging.getLogger(__name__)
 
-# --- NEW: App Lifespan (Connect/Disconnect DB) ---
-# This code runs when your app starts and stops
+# --- App Lifespan (DB connect/disconnect) ---
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # On startup:
+    # startup
     try:
         await database.connect()
         logger.info("Database connection established.")
     except Exception as e:
-        logger.error(f"Failed to connect to database: {e}")
-        # In a real app, you might want to raise this to stop the app
+        logger.error(f"Failed to connect to database during startup: {e}")
+        # don't raise here so the app can start and return a controlled error on health endpoints
     yield
-    # On shutdown:
-    await database.disconnect()
-    logger.info("Database connection closed.")
-
+    # shutdown
+    try:
+        if database.is_connected:
+            await database.disconnect()
+            logger.info("Database connection closed.")
+    except Exception as e:
+        logger.warning(f"Error while disconnecting database: {e}")
 
 # --- Initialize FastAPI App ---
-# We have REMOVED root_path="/api" to fix the Vercel 404 error
 app = FastAPI(
     title="CreditPathAI Loan Recovery System",
     description="An AI-based system to predict loan default risk and recommend actions.",
     version="1.0.0",
-    lifespan=lifespan
+    lifespan=lifespan,
 )
 
-# --- Add CORS Middleware ---
+# --- CORS ---
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["*"],  # tighten this in production
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
 # --- Pydantic Models ---
-
-# Model for the Risk Calculator
 class Borrower(BaseModel):
     homeOwn: str
     annualIncome: float = Field(..., gt=0, description="Annual Income in dollars")
@@ -106,7 +110,6 @@ class Borrower(BaseModel):
 class BatchPredictionRequest(BaseModel):
     instances: List[Borrower]
 
-# NEW: Models for User Login & Creation
 class UserCreate(BaseModel):
     email: EmailStr
     password: str
@@ -119,18 +122,20 @@ class UserLogin(BaseModel):
 def predict_default_probability(data: Borrower) -> float:
     """Simulates a model prediction based on a simplified risk score."""
     risk_score = 0.0
+    # credit score contribution
     risk_score += (850 - data.creditSc) / 850
-    monthly_income = data.annualIncome / 12
+    # debt-to-income
+    monthly_income = data.annualIncome / 12 if data.annualIncome else 0
     if monthly_income > 0:
         dti = data.monthlyDt / monthly_income
         risk_score += min(dti * 0.5, 0.5)
-    if data.homeOwn == 'RENT':
+    # renting penalty
+    if data.homeOwn.upper() == "RENT":
         risk_score += 0.1
     probability = min(max(risk_score / 2.0, 0.05), 0.95)
     return probability
 
-def map_to_recommendation(probability: float) -> (str, str):
-    """Maps a prediction probability to a recommended action."""
+def map_to_recommendation(probability: float) -> Tuple[str, str]:
     if probability >= 0.65:
         return "High Risk", "Priority Collection / Loan Restructure"
     elif 0.35 <= probability < 0.65:
@@ -138,109 +143,122 @@ def map_to_recommendation(probability: float) -> (str, str):
     else:
         return "Low Risk", "Standard Reminder"
 
-# --- Serve Frontend (No longer needed, Vercel handles this) ---
-# We remove the @app.get("/") that serves index.html
-# Vercel's "routes" in vercel.json handles this now.
-
-# NEW: Root path for API (for testing)
+# --- API Prefix: /api/* to match Vercel routing conventions --- #
 @app.get("/api")
 async def read_root():
-    return {"message": "CreditPathAI Backend is running. Access the frontend at its separate URL."}
+    return {"message": "CreditPathAI Backend is running. Use /api/* endpoints."}
 
-
-# --- NEW HEALTH CHECK ENDPOINT ---
-@app.get("/health")
+@app.get("/api/health")
 async def health_check():
-    """Confirms the API is running and the database is connected."""
+    """Confirms the API is running and (attempts to) check the database connection."""
+    # Quick check using database.is_connected
     try:
-        # Perform a simple query to check DB connection
-        await database.execute("SELECT 1")
-        return {"status": "OK", "message": "CreditPathAI API is running and database is connected."}
+        if database.is_connected:
+            return {"status": "OK", "message": "Database connection appears active."}
+        # Attempt a lightweight query to validate DB (works for SQLAlchemy-backed DBs)
+        try:
+            # Using a raw SQL that works on SQLite/Postgres
+            result = await database.fetch_one("SELECT 1")
+            return {"status": "OK", "message": "Database reachable", "result": result}
+        except Exception as q_err:
+            # Return an informative 503
+            logger.error(f"Health check DB query failed: {q_err}")
+            raise HTTPException(status_code=503, detail=f"Service Unavailable: DB query failed: {q_err}")
+    except HTTPException:
+        raise
     except Exception as e:
-        logger.error(f"Health check failed: Database connection error: {e}")
-        raise HTTPException(
-            status_code=503, 
-            detail=f"Service Unavailable: Cannot connect to the database. Error: {e}"
-        )
+        logger.error(f"Health check general failure: {e}")
+        raise HTTPException(status_code=503, detail=f"Service Unavailable: {e}")
 
-
-# --- NEW: User Creation Endpoint ---
-@app.post("/create-account")
+# --- User Endpoints ---
+@app.post("/api/create-account")
 async def create_account(user: UserCreate):
     """Creates a new user in the database."""
     # Check if user already exists
     query = users.select().where(users.c.email == user.email)
-    existing_user = await database.fetch_one(query)
+    try:
+        existing_user = await database.fetch_one(query)
+    except Exception as e:
+        logger.error(f"DB error checking existing user: {e}")
+        raise HTTPException(status_code=500, detail="Database error while checking user existence.")
     if existing_user:
         logger.warning(f"Account creation failed: Email already registered - {user.email}")
         raise HTTPException(status_code=400, detail="Email already registered")
-    
-    # Hash the password
+
     hashed_password = pwd_context.hash(user.password)
-    
-    # Insert new user into database
-    query = users.insert().values(email=user.email, hashed_password=hashed_password)
+    insert_query = users.insert().values(email=user.email, hashed_password=hashed_password)
     try:
-        await database.execute(query)
+        await database.execute(insert_query)
         logger.info(f"New account created: {user.email}")
         return {"message": "Account created successfully"}
     except Exception as e:
         logger.error(f"Database error during account creation: {e}")
         raise HTTPException(status_code=500, detail="An internal error occurred while creating the account.")
 
-
-# --- NEW: User Login Endpoint ---
-@app.post("/login")
+@app.post("/api/login")
 async def login(user: UserLogin):
     """Logs a user in by verifying their email and password."""
-    # Find the user by email
     query = users.select().where(users.c.email == user.email)
-    db_user = await database.fetch_one(query)
-    
-    # Check if user exists and password is correct
+    try:
+        db_user = await database.fetch_one(query)
+    except Exception as e:
+        logger.error(f"DB error during login lookup: {e}")
+        raise HTTPException(status_code=500, detail="Database error during login.")
+
     if not db_user:
         logger.warning(f"Login failed: User not found - {user.email}")
         raise HTTPException(status_code=400, detail="Incorrect email or password")
-        
-    if not pwd_context.verify(user.password, db_user["hashed_password"]):
-        logger.warning(f"Login failed: Incorrect password for user - {user.email}")
-        raise HTTPException(status_code=400, detail="Incorrect email or password")
-    
-    # Login successful
+
+    try:
+        if not pwd_context.verify(user.password, db_user["hashed_password"]):
+            logger.warning(f"Login failed: Incorrect password for user - {user.email}")
+            raise HTTPException(status_code=400, detail="Incorrect email or password")
+    except Exception as e:
+        logger.error(f"Error verifying password for {user.email}: {e}")
+        raise HTTPException(status_code=500, detail="Internal error verifying credentials.")
+
     logger.info(f"User logged in: {user.email}")
     return {"message": "Login successful"}
 
-
-# --- API Endpoint for Batch Prediction ---
-@app.post("/predict/batch")
+# --- Prediction Endpoint (batch) ---
+@app.post("/api/predict/batch")
 async def batch_predict(request: BatchPredictionRequest):
     """Accepts a batch of borrower data, predicts risk, and logs the transaction."""
+    if not request.instances:
+        raise HTTPException(status_code=400, detail="Input list cannot be empty.")
+
+    predictions = []
     try:
-        predictions = []
-        if not request.instances:
-            raise HTTPException(status_code=400, detail="Input list cannot be empty.")
-        
         for i, borrower_data in enumerate(request.instances):
             probability = predict_default_probability(borrower_data)
             risk_level, action = map_to_recommendation(probability)
-            
+
             result = {
                 "borrower_index": i,
                 "probability": probability,
                 "risk_level": risk_level,
-                "recommended_action": action
+                "recommended_action": action,
             }
             predictions.append(result)
-            
-            # Log the successful prediction
-            logger.info({
-                "status": "SUCCESS",
-                "input_data": borrower_data.model_dump(), # Use .model_dump() for Pydantic v2
-                "prediction": result
-            })
-            
+
+            # Use model_dump (Pydantic v2) safely
+            try:
+                input_dump = borrower_data.model_dump()
+            except Exception:
+                # fallback if model_dump not present
+                input_dump = borrower_data.dict() if hasattr(borrower_data, "dict") else str(borrower_data)
+
+            logger.info(
+                {
+                    "status": "SUCCESS",
+                    "input_data": input_dump,
+                    "prediction": result,
+                }
+            )
+
         return {"predictions": predictions}
-        
+    except HTTPException:
+        raise
     except Exception as e:
         logger.error({"status": "FAILURE", "error": str(e)})
         raise HTTPException(status_code=500, detail=f"An internal server error occurred: {e}")
