@@ -1,157 +1,87 @@
-# CreditPath-AI: Loan Default Risk Prediction 
+## CreditPath-AI: Loan Default Risk Prediction System
 
 An AI-powered loan default risk prediction system leveraging machine learning to help banks make data-driven lending decisions. Built with LightGBM, achieving 99.07% AUC-ROC accuracy in the theoretical model.
 
-### 🚀 Live Deployment & Overview
+#### Overview
 
-This project is configured as a stable, split full-stack web application.
+Problem Statement
 
-Deployment Status
+Loan default risk is a critical challenge in banking affecting profitability, operational costs, and regulatory compliance. Traditional credit assessment methods are manual, time-consuming, and often unable to detect complex risk patterns. CreditPath-AI addresses this by leveraging machine learning to accurately predict loan default probability, enabling banks to manage risk proactively and make strategic decisions.
 
-Component
+Why This Matters
 
-Host
+Financial Impact: Early identification of risky borrowers can reduce losses by 40-60%.
 
-URL Status
+Operational Efficiency: Automates risk scoring in seconds versus hours of manual review.
 
-Frontend (UI & Logic)
+Regulatory Compliance: Meets Basel III and RBI guidelines with transparent, auditable models.
 
-GitHub Pages
+Business Value: Supports faster application processing while balancing risk mitigation.
 
-Live (Hosts the login pages and calculator interface)
+-----
+#### Key Features
 
-Backend (API/Calculator)
-
-Railway.app
-
-Live (Runs the risk calculation logic)
-
-Backend (API/Calculator)
-
-Railway.app
-
-Live (Runs the risk calculation logic)
+The application is deployed using a stable split deployment approach to meet operational demands:
 
 Live Website Link: https://UmaSupraja.github.io/Credit-Path-AI/
 
-(Note: The live API uses a lightweight Python model for stability and speed, as the full-scale model files are not deployed.)
+Mandatory Demo Login Flow: The application starts with a secure-feeling Create Account and Sign In feature. (Login uses simple browser memory storage for demonstration purposes.)
 
-Key Features
+Single Prediction: Real-time default risk assessment for individual borrowers via the FastAPI backend.
 
-Mandatory Demo Login Flow: The application starts with a user authentication page featuring Create Account and Sign In. (Login uses simple browser memory storage for demonstration purposes.)
-
-AI Risk Prediction: The 8-field form sends borrower data to the live FastAPI backend, which returns an instant Risk Prediction (Low, Medium, or High) and an Actionable Recommendation.
+Actionable Recommendations: Instant probability calculation with color-coded risk levels and business-focused recommendations.
 
 AI Credit Coach: A chat interface that connects to the Google Gemini API to provide general financial and credit health guidance.
 
-####  Data and Technical Specification
+Batch Processing (Simulated Feature): Placeholder structure for processing multiple borrowers via CSV upload.
 
-Dataset
+--------------------
+#### Technology Stack
 
-The model's theoretical performance metrics are based on the Loan Default Dataset sourced from Kaggle.
+ a. Backend
 
-Source: Link to the dataset on Kaggle
+| Component | Technology | Role | 
+| :--- | :--- | :--- | 
+| **Framework** | **FastAPI** | High-performance asynchronous API for prediction and logging. | 
+| **Server** | **Uvicorn / Railway** | ASGI server providing a stable host environment. | 
+| **Validation** | **Pydantic** | Input validation and strict schema management. |
 
-Location: The dataset is stored in the repository at Data/loan_data.csv.
+ b. Frontend
 
-Technology Stack
+| Component | Technology | Role | 
+| :--- | :--- | :--- | 
+| **Structure** | **HTML5 / JavaScript (ES6+)** | Single-page application (SPA) core logic and demo state management. | 
+| **Styling** | **Tailwind CSS** | Responsive, mobile-first utility framework for UI. |
 
-Component
+c. Machine Learning
 
-Technology
+| Component | Technology | Role | 
+| :--- | :--- | :--- | 
+| **Primary Model** | **LightGBM** | Primary classification model achieving highest AUC-ROC. | 
+| **Training Tools** | **Scikit-learn/SMOTE** | Data preprocessing, feature scaling, and class balancing. |
 
-Role
+----------------------
+#### Model Performance
 
-Backend
+Final Model: LightGBM Classifier (Theoretical Metrics)
 
-FastAPI
+| Metric | Value | Interpretation |
+| :--- | :--- | :--- |
+| **AUC-ROC** | **99.07%** | Outstanding discrimination between defaulters and non-defaulters. |
+| **Accuracy** | 95% | Correctly predicts 19 out of 20 cases overall. |
+| **Recall** | 94% | Effectively catches 94% of actual defaulters (minimizing costly missed defaults). |
+| **F1-Score** | 0.95 | Excellent balance between Precision and Recall. |
 
-High-performance asynchronous API framework.
+Confusion Matrix
+| | **Predicted Non-Default** | **Predicted Default** | 
+| :---: | :---: | :---: | 
+| **Actual Non-Default** | 6,673 | 327 | 
+| **Actual Default** | 400 | 6,600 |
 
-Model (Theor.)
+----------------
 
-LightGBM
+#### Project Structure
 
-Primary gradient boosting model (99.07% AUC).
+The project code reflects a simplified structure for stable cloud deployment:
 
-Deployment
-
-Railway / Uvicorn
-
-ASGI server providing a stable, scalable host for the API.
-
-Frontend
-
-HTML/JS/Tailwind
-
-Single-page application (SPA) with responsive styling.
-
-Model Performance (Theoretical Metrics)
-
-The production model was trained using 45,000+ loan records and analyzed 24 features including derived metrics like LTI Ratio and Credit Stability Index.
-
-Metric
-
-Value
-
-Interpretation
-
-AUC-ROC
-
-99.07%
-
-Outstanding discrimination between defaulters and non-defaulters.
-
-Accuracy
-
-95%
-
-Correctly predicts 19 out of 20 cases overall.
-
-Recall
-
-94%
-
-Effectively catches 94% of actual defaulters (minimizing costly missed defaults).
-
-Project Structure (Live Code)
-
-Credit-Path-AI/
-├── main.py                 # FastAPI application and simplified risk logic.
-├── requirements.txt        # Python dependencies (fastapi, uvicorn, pydantic).
-└── index.html              # Frontend UI, Demo Login/Logout logic, and API call configuration.
-
-
-### 🛠️ How to Run This Project Locally
-
-1. Prepare the Python Environment
-
-#### Clone the Repository
-git clone [https://github.com/UmaSupraja/Credit-Path-AI.git](https://github.com/UmaSupraja/Credit-Path-AI.git)
-cd Credit-Path-AI
-
-#### Create and Activate the Environment
-python -m venv venv
-source venv/bin/activate
-#### Install the required libraries
-pip install -r requirements.txt
-
-
-2. Run the Backend Server
-
-uvicorn main:app --reload
-
-
-(The server will be running at http://127.0.0.1:8000.)
-
-3. Access the Frontend
-
-Open the user interface:
-
-#### In your file explorer, double-click this file:
-open index.html
-
-
-(The frontend automatically uses the local API address when running the file directly.)
-
-
+CreditPath-AI/ │ ├── main.py # FastAPI application and simplified risk logic. ├── requirements.txt # Python dependencies (fastapi, uvicorn, pydantic). └── index.html # Frontend UI, Demo Login/Logout logic, and API call configuration.
