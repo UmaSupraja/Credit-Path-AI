@@ -1,4 +1,4 @@
-# CreditPath-AI: Loan Default Risk Prediction System
+# CreditPath-AI: Loan Default Risk Prediction
 
 An AI-powered loan default risk prediction system leveraging machine learning to help banks make data-driven lending decisions. Built with LightGBM, achieving 99.07% AUC-ROC accuracy in the theoretical model.
 
@@ -216,3 +216,4 @@ Pydantic validation caught 95% of input errors.
 Async FastAPI handled concurrent requests efficiently.
 
 Comprehensive logging essential for production monitoring.
+
