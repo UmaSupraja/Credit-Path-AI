@@ -1,8 +1,8 @@
-## CreditPath-AI: Loan Default Risk Prediction System
+# CreditPath-AI: Loan Default Risk Prediction System
 
 An AI-powered loan default risk prediction system leveraging machine learning to help banks make data-driven lending decisions. Built with LightGBM, achieving 99.07% AUC-ROC accuracy in the theoretical model.
 
-#### Overview
+## Overview
 
 Problem Statement
 
@@ -19,7 +19,7 @@ Regulatory Compliance: Meets Basel III and RBI guidelines with transparent, audi
 Business Value: Supports faster application processing while balancing risk mitigation.
 
 -----
-#### Key Features
+## Key Features
 
 The application is deployed using a stable split deployment approach to meet operational demands:
 
@@ -36,7 +36,7 @@ AI Credit Coach: A chat interface that connects to the Google Gemini API to prov
 Batch Processing (Simulated Feature): Placeholder structure for processing multiple borrowers via CSV upload.
 
 --------------------
-#### Technology Stack
+## Technology Stack
 
  a. Backend
 
@@ -80,8 +80,139 @@ Confusion Matrix
 
 ----------------
 
-#### Project Structure
+## Project Structure
 
 The project code reflects a simplified structure for stable cloud deployment:
 
-CreditPath-AI/ │ ├── main.py # FastAPI application and simplified risk logic. ├── requirements.txt # Python dependencies (fastapi, uvicorn, pydantic). └── index.html # Frontend UI, Demo Login/Logout logic, and API call configuration.
+```
+CreditPath-AI/
+│
+├── backend/
+│   ├── main.py          
+│   
+├── requirements.txt       
+│
+├── frontend/
+│   ├── index.html              
+|
+└── README.md
+```
+----------------
+
+## Installation
+
+Prerequisites
+
+Python 3.8 or higher
+
+pip package manager
+
+Step 1: Clone Repository
+```bash
+git clone [https://github.com/UmaSupraja/Credit-Path-AI.git](https://github.com/UmaSupraja/Credit-Path-AI.git)
+cd Credit-Path-AI
+```
+
+Step 2: Install Backend Dependencies
+
+```bash
+# Create and Activate the Environment
+python -m venv venv
+source venv/bin/activate
+# Install the required libraries
+pip install -r requirements.txt
+```
+
+7. Usage
+
+Start Backend Server
+
+To run the API locally for development:
+
+```bash
+uvicorn main:app --reload
+```
+(The server will be running at http://127.0.0.1:8000.)
+
+Access Frontend
+
+Open the user interface:
+```bash
+# In your file explorer, double-click this file:
+open index.html
+```
+
+(The frontend automatically uses the local API address when running the file directly.)
+
+## API Documentation
+
+API Endpoint (Prediction)
+
+The core endpoint for risk calculation:
+
+POST /predict/batch
+| Parameter | Type | Required | Description | 
+| :--- | :--- | :--- | :--- | 
+| **instances** | `List[Borrower]` | Yes | Array containing the borrower data object. |
+
+Output Schema: Returns an array containing the calculated default_probability, risk_level, and recommended_action.
+
+Health Check
+
+GET /health
+
+Returns {"status": "OK", "message": "CreditPathAI API is running."}
+
+--------------------
+
+## Data Processing Pipeline (Theoretical)
+
+This outlines the full, intended data pipeline for the prediction model:
+
+Input Data
+
+Missing Value Handling (Median Imputation)
+
+Feature Engineering (LTI Ratio, Credit Stability Index)
+
+Feature Scaling (StandardScaler)
+
+One-Hot Encoding (Categorical Variables)
+
+Class Balancing (SMOTE)
+
+LightGBM Model Prediction
+
+Risk Classification (Thresholds: 0.3, 0.6)
+
+Recommendation Engine
+
+JSON Response with Actions
+
+------------------------------
+
+## Key Learnings
+
+Data Preprocessing
+
+SMOTE balancing improved recall by 12%.
+
+Derived features (LTI_Ratio) boosted accuracy by ~5%.
+
+Median imputation handled outliers better than mean.
+
+Model Selection
+
+LightGBM outperformed XGBoost by 0.1% AUC.
+
+Leaf-wise growth strategy proved more effective.
+
+Well-calibrated probabilities enabled reliable thresholds.
+
+API Design
+
+Pydantic validation caught 95% of input errors.
+
+Async FastAPI handled concurrent requests efficiently.
+
+Comprehensive logging essential for production monitoring.
