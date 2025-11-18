@@ -1,7 +1,12 @@
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- FIXED: Allow Tailwind CDN and Railway API -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com https://generativelanguage.googleapis.com https://credit-path-ai-production.up.railway.app;">
     <title>CREDIT PATH-AI</title>
+    <!-- Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* Hide scrollbar */
@@ -45,6 +50,9 @@
 </head>
 <body class="bg-slate-900 text-slate-200 font-sans min-h-screen antialiased">
 
+    <!-- 
+      PAGE 1: LOGIN PAGE 
+    -->
     <div id="login-page" class="flex items-center justify-center min-h-screen p-4">
         <div class="bg-slate-800 p-8 rounded-lg shadow-xl w-full max-w-md border border-slate-700">
             <h1 class="text-4xl font-bold text-white mb-2 text-center">CREDIT PATH-AI</h1>
@@ -86,6 +94,9 @@
         </div>
     </div>
     
+    <!-- 
+      PAGE 2: CREATE ACCOUNT PAGE 
+    -->
     <div id="create-account-page" class="flex items-center justify-center min-h-screen p-4 hidden">
         <div class="bg-slate-800 p-8 rounded-lg shadow-xl w-full max-w-md border border-slate-700">
             <h1 class="text-4xl font-bold text-white mb-2 text-center">Create Account</h1>
@@ -135,7 +146,9 @@
         </div>
     </div>
 
-
+    <!-- 
+      PAGE 3: CALCULATOR / DASHBOARD PAGE 
+    -->
     <div id="calculator-page" class="min-h-screen hidden relative">
         <header class="bg-slate-800 border-b border-slate-700">
             <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -156,6 +169,7 @@
         <main class="max-w-7xl mx-auto p-4 sm:px-6 lg:px-8 py-8">
             <div class="flex flex-col lg:flex-row gap-8">
                 
+                <!-- Left Column: Form -->
                 <div class="lg:w-2/3 bg-slate-800 p-6 md:p-8 rounded-lg shadow-xl border border-slate-700">
                     <h2 class="text-3xl font-semibold text-white mb-6">Calculate Your Credit Risk</h2>
                     <p class="text-slate-400 mb-8">
@@ -209,6 +223,7 @@
                             <input type="number" name="creditSc" placeholder="300 - 850" min="300" max="850" class="w-full bg-slate-700 border border-slate-600 rounded-md p-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
                         </div>
 
+                        <!-- Submit Button -->
                         <div class="md:col-span-2 mt-6">
                              <button id="calculate-btn" type="submit" class="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-3 px-6 rounded-lg text-lg transition-colors flex items-center justify-center gap-3">
                                 <svg id="calc-submit-icon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v.01M9 10h.01M9 13h.01M12 10h.01M12 13h.01M15 10h.01M15 13h.01M9 17h.01M12 17h.01M15 17h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
@@ -222,9 +237,10 @@
                     </form>
                 </div>
                 
+                <!-- Right Column: Result -->
                 <div class="lg:w-1/3">
                     <div id="result-container" class="bg-slate-800 p-6 md:p-8 rounded-lg shadow-xl border border-slate-700 sticky top-24 hidden">
-                        </div>
+                    </div>
                     
                     <div id="result-placeholder" class="bg-slate-800 p-6 md:p-8 rounded-lg shadow-xl border border-dashed border-slate-600 sticky top-24 text-center">
                         <svg class="w-16 h-16 mx-auto mb-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 17v-2m3 2v-4m3 4v-6m2 10V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2h14a2 2 0 002-2z"></path></svg>
@@ -236,11 +252,13 @@
             </div>
         </main>
 
+        <!-- AI CHAT: Floating Button -->
         <button id="chat-btn" title="Ask Credit Coach" class="fixed bottom-6 right-6 bg-indigo-600 hover:bg-indigo-500 text-white w-16 h-16 rounded-full shadow-xl flex items-center justify-center transition-transform transform hover:scale-110">
             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.54 15.266 3 13.684 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
         </button>
     </div>
 
+    <!-- Custom Modal for Errors -->
     <div id="error-modal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50 hidden">
         <div class="bg-slate-800 rounded-lg shadow-xl max-w-sm w-full p-6 text-center border border-slate-700">
             <svg class="w-16 h-16 mx-auto mb-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
@@ -252,6 +270,7 @@
         </div>
     </div>
 
+    <!-- AI CHAT: Modal -->
     <div id="chat-modal" class="fixed bottom-24 right-6 w-full max-w-md bg-slate-800 rounded-lg shadow-2xl border border-slate-700 hidden" style="height: 60vh;">
         <div class="flex flex-col h-full">
             <div class="flex justify-between items-center p-4 border-b border-slate-700">
@@ -265,7 +284,7 @@
                 <div class="chat-bubble bot">
                     Hello! I'm your AI Credit Coach. Ask me anything about credit scores, loans, or financial health.
                 </div>
-                </div>
+            </div>
             
             <div id="chat-loading" class="p-4 border-t border-slate-700 hidden">
                 <div class="flex items-center space-x-2">
@@ -291,38 +310,31 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // --- NEW: Demo User Database ---
-            // We will store the created account's email and password here.
-            // In a real app, this would be in a secure database.
+            // Demo User Database (Browser memory)
             let demoUserEmail = null;
             let demoUserPassword = null;
-            // --- End of New ---
 
-            // Page containers
+            // Elements
             const loginPage = document.getElementById('login-page');
             const calculatorPage = document.getElementById('calculator-page');
             const createAccountPage = document.getElementById('create-account-page');
             
-            // Login elements
             const loginForm = document.getElementById('login-form');
-            const loginBtn = document.getElementById('login-btn');
             const emailInput = document.getElementById('email');
-            const passwordInput = document.getElementById('password'); // ADD THIS
-            const togglePasswordBtn = document.getElementById('toggle-password'); // ADD THIS
+            const passwordInput = document.getElementById('password');
+            const togglePasswordBtn = document.getElementById('toggle-password');
             const loginMessage = document.getElementById('login-message');
             const goToCreateAccountBtn = document.getElementById('go-to-create-account-btn');
-            const loginError = document.getElementById('login-error'); // New
+            const loginError = document.getElementById('login-error'); 
 
-            // Create Account elements
             const createAccountForm = document.getElementById('create-account-form');
             const newPasswordInput = document.getElementById('new-password');
-            const toggleNewPasswordBtn = document.getElementById('toggle-new-password'); // ADD THIS
+            const toggleNewPasswordBtn = document.getElementById('toggle-new-password');
             const confirmPasswordInput = document.getElementById('confirm-password');
-            const toggleConfirmPasswordBtn = document.getElementById('toggle-confirm-password'); // ADD THIS
+            const toggleConfirmPasswordBtn = document.getElementById('toggle-confirm-password');
             const goToLoginBtn = document.getElementById('go-to-login-btn');
-            const createError = document.getElementById('create-error'); // New
+            const createError = document.getElementById('create-error'); 
 
-            // Calculator elements
             const logoutBtn = document.getElementById('logout-btn');
             const welcomeEmail = document.getElementById('welcome-email');
             const calculatorForm = document.getElementById('calculator-form');
@@ -333,12 +345,10 @@
             const resultContainer = document.getElementById('result-container');
             const resultPlaceholder = document.getElementById('result-placeholder');
 
-            // Modal elements
             const errorModal = document.getElementById('error-modal');
             const errorMessageText = document.getElementById('error-message-text');
             const closeModalBtn = document.getElementById('close-modal-btn');
 
-            // --- AI CHAT ELEMENTS ---
             const chatBtn = document.getElementById('chat-btn');
             const chatModal = document.getElementById('chat-modal');
             const closeChatBtn = document.getElementById('close-chat-btn');
@@ -347,9 +357,10 @@
             const chatHistory = document.getElementById('chat-history');
             const chatLoading = document.getElementById('chat-loading');
 
-            // ---
-            // --- Page & Modal Logic ---
-            // ---
+            // Live Railway API
+            const calcApiUrl = "https://credit-path-ai-production.up.railway.app/predict/batch";
+
+            // --- Logic ---
 
             const showPage = (pageId) => {
                 loginPage.classList.add('hidden');
@@ -367,7 +378,7 @@
                 errorModal.classList.add('hidden');
             };
 
-            // --- NEW: Password Toggle Logic ---
+            // Password Toggle
             const togglePasswordVisibility = (inputEl, eyeEl, eyeSlashEl) => {
                 if (inputEl.type === 'password') {
                     inputEl.type = 'text';
@@ -381,71 +392,47 @@
             };
 
             togglePasswordBtn.addEventListener('click', () => {
-                togglePasswordVisibility(
-                    passwordInput,
-                    document.getElementById('toggle-password-eye'),
-                    document.getElementById('toggle-password-eye-slash')
-                );
+                togglePasswordVisibility(passwordInput, document.getElementById('toggle-password-eye'), document.getElementById('toggle-password-eye-slash'));
             });
 
             toggleNewPasswordBtn.addEventListener('click', () => {
-                togglePasswordVisibility(
-                    newPasswordInput,
-                    document.getElementById('toggle-new-password-eye'),
-                    document.getElementById('toggle-new-password-eye-slash')
-                );
+                togglePasswordVisibility(newPasswordInput, document.getElementById('toggle-new-password-eye'), document.getElementById('toggle-new-password-eye-slash'));
             });
 
             toggleConfirmPasswordBtn.addEventListener('click', () => {
-                togglePasswordVisibility(
-                    confirmPasswordInput,
-                    document.getElementById('toggle-confirm-password-eye'),
-                    document.getElementById('toggle-confirm-password-eye-slash')
-                );
+                togglePasswordVisibility(confirmPasswordInput, document.getElementById('toggle-confirm-password-eye'), document.getElementById('toggle-confirm-password-eye-slash'));
             });
-            // --- End of Password Toggle Logic ---
 
-
-            // ---
-            // --- "DEMO" Login / Logout / Create Account Logic ---
-            // ---
-
+            // Login Logic
             loginForm.addEventListener('submit', (e) => {
                 e.preventDefault(); 
                 loginMessage.classList.add('hidden');
-                loginError.classList.add('hidden'); // New
+                loginError.classList.add('hidden'); 
                 
-                // Get the values from the form
                 const email = emailInput.value;
                 const password = passwordInput.value;
 
                 if (!loginForm.checkValidity()) {
                     showModal('Please enter a valid email and password.');
-                
-                // Check if an account has even been created
                 } else if (demoUserEmail === null || demoUserPassword === null) {
-                    loginError.textContent = 'No account found. Please create an account first.'; // New
-                    loginError.classList.remove('hidden'); // New
-
-                // --- THIS IS THE "DEMO" CHECK ---
+                    loginError.textContent = 'No account found. Please create an account first.';
+                    loginError.classList.remove('hidden');
                 } else if (email === demoUserEmail && password === demoUserPassword) {
-                    // --- SUCCESS ---
                     welcomeEmail.textContent = `Welcome, ${email}!`;
                     showPage('calculator-page');
                     loginForm.reset();
                     resultContainer.classList.add('hidden');
                     resultPlaceholder.classList.remove('hidden');
                 } else {
-                    // --- FAILURE ---
-                    loginError.textContent = 'The entered email or password is incorrect.'; // New
-                    loginError.classList.remove('hidden'); // New
+                    loginError.textContent = 'The entered email or password is incorrect.';
+                    loginError.classList.remove('hidden'); 
                 }
             });
             
+            // Create Account Logic
             createAccountForm.addEventListener('submit', (e) => {
                 e.preventDefault();
-                createError.classList.add('hidden'); // New
-                // Get the new email value
+                createError.classList.add('hidden');
                 const email = document.getElementById('new-email').value;
                 const newPassword = newPasswordInput.value;
                 const confirmPassword = confirmPasswordInput.value;
@@ -453,14 +440,11 @@
                 if (!createAccountForm.checkValidity()) {
                      showModal('Please fill out all fields.');
                 } else if (newPassword !== confirmPassword) {
-                    createError.textContent = 'Passwords do not match. Please try again.'; // New
-                    createError.classList.remove('hidden'); // New
+                    createError.textContent = 'Passwords do not match. Please try again.';
+                    createError.classList.remove('hidden');
                 } else {
-                    // --- NEW: Save to our "Demo Database" ---
                     demoUserEmail = email;
                     demoUserPassword = newPassword;
-                    // --- End of New ---
-
                     createAccountForm.reset();
                     showPage('login-page');
                     loginMessage.textContent = 'Account created successfully! Please sign in.';
@@ -473,31 +457,25 @@
                 calculatorForm.reset();
                 closeChat();
                 loginMessage.classList.add('hidden');
-                loginError.classList.add('hidden'); // New
+                loginError.classList.add('hidden');
             });
             
             goToCreateAccountBtn.addEventListener('click', (e) => {
                 e.preventDefault();
-                loginError.classList.add('hidden'); // New
-                loginMessage.classList.add('hidden'); // New
+                loginError.classList.add('hidden');
+                loginMessage.classList.add('hidden');
                 showPage('create-account-page');
             });
 
             goToLoginBtn.addEventListener('click', (e) => {
                 e.preventDefault();
-                createError.classList.add('hidden'); // New
+                createError.classList.add('hidden');
                 showPage('login-page');
             });
             
             closeModalBtn.addEventListener('click', hideModal);
 
-            // ---
-            // --- Calculator Logic (NOW CONNECTED) ---
-            // ---
-
-            // --- THIS IS THE CRITICAL CHANGE ---
-            const calcApiUrl = "https://credit-path-ai-production.up.railway.app/predict/batch";
-
+            // Calculator Logic
             calculatorForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 
@@ -526,12 +504,9 @@
                 };
 
                 try {
-                    // This is the real API call using fetch()
-                    const response = await fetch(calcApiUrl, { // <-- THIS IS THE FIX
+                    const response = await fetch(calcApiUrl, {
                         method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
+                        headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(apiPayload)
                     });
 
@@ -573,8 +548,6 @@
 
             const displayResult = (result) => {
                 let borderColor, textColor, riskIcon;
-
-                // The API returns 'risk_level' and 'recommended_action'
                 if (result.risk_level === "High Risk") {
                     borderColor = 'border-red-500';
                     textColor = 'text-red-300';
@@ -583,7 +556,7 @@
                     borderColor = 'border-yellow-500';
                     textColor = 'text-yellow-300';
                     riskIcon = `<svg class="w-16 h-16 text-yellow-500 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2CSS.svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>`;
-                } else { // Low Risk
+                } else { 
                     borderColor = 'border-green-500';
                     textColor = 'text-green-300';
                     riskIcon = `<svg class="w-16 h-16 text-green-500 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`;
@@ -611,24 +584,15 @@
                 resultPlaceholder.classList.add('hidden');
             };
 
-            // ---
-            // --- AI CHAT LOGIC (NOW WITH API KEY) ---
-            // ---
-
-            const openChat = () => {
-                chatModal.classList.remove('hidden');
-            };
-
-            const closeChat = () => {
-                chatModal.classList.add('hidden');
-            };
+            // AI Chat
+            const openChat = () => { chatModal.classList.remove('hidden'); };
+            const closeChat = () => { chatModal.classList.add('hidden'); };
             
             const addChatMessage = (sender, message) => {
                 const bubble = document.createElement('div');
                 bubble.classList.add('chat-bubble', sender);
                 bubble.textContent = message;
                 chatHistory.appendChild(bubble);
-                // Scroll to bottom
                 chatHistory.scrollTop = chatHistory.scrollHeight;
             };
 
@@ -655,79 +619,39 @@
             };
 
             const callGeminiApi = async (prompt) => {
-                const systemPrompt = `You are an expert AI Credit Coach for the "CREDIT PATH-AI" application. 
-                Your role is to answer user questions about credit scores, loans, debt, and general financial health.
-                Be helpful, encouraging, and provide clear, simple explanations. 
-                Do NOT answer questions that are off-topic (e.g., about history, science, celebrities, etc.). 
-                If asked an off-topic question, politely decline and remind the user of your purpose.
-                Keep your answers concise and easy to understand.`;
-                
-                // --- API KEY ADDED ---
-                const apiKey = "AIzaSyB9-rfeW-McsTNZ5bEpHwfezCY9tWQKIeQ"; // Use your actual API key
+                const systemPrompt = `You are an expert AI Credit Coach for the "CREDIT PATH-AI" application. Be helpful, encouraging, and provide clear, simple explanations. Do NOT answer questions that are off-topic.`;
+                const apiKey = ""; // Your API Key
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+                const payload = { systemInstruction: { parts: [{ text: systemPrompt }] }, contents: [ { parts: [{ text: prompt }] } ] };
 
-                const payload = {
-                    systemInstruction: {
-                        parts: [{ text: systemPrompt }]
-                    },
-                    contents: [
-                        { parts: [{ text: prompt }] }
-                    ]
-                };
-
-                // Add exponential backoff for retries
-                let response;
                 let delay = 1000;
-                for (let i = 0; i < 3; i++) { // Retry up to 3 times
+                for (let i = 0; i < 3; i++) {
                     try {
-                        response = await fetch(apiUrl, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(payload)
-                        });
-
+                        const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
                         if (response.ok) {
                             const result = await response.json();
-                            const candidate = result.candidates?.[0];
-                            if (candidate && candidate.content?.parts?.[0]?.text) {
-                                return candidate.content.parts[0].text;
-                            } else {
-                                throw new Error("Invalid response structure from API.");
-                            }
+                            return result.candidates?.[0]?.content?.parts?.[0]?.text || "Invalid response.";
                         } else if (response.status === 429 || response.status >= 500) {
-                            // Throttling or server error, wait and retry
                             await new Promise(resolve => setTimeout(resolve, delay));
-                            delay *= 2; // Exponential backoff
+                            delay *= 2; 
                         } else {
-                            // Other client-side error (e.g., 400), don't retry
                             const errorResult = await response.json();
                             throw new Error(errorResult.error?.message || "An unknown API error occurred.");
                         }
                     } catch (error) {
-                        if (i === 2) { // Last retry failed
-                            throw error;
-                        }
-                        // Log retry attempt (optional)
+                        if (i === 2) throw error;
                         console.log(`Retry attempt ${i + 1} failed. Retrying in ${delay}ms...`);
                     }
                 }
-                // This line should not be reachable, but as a fallback:
                 throw new Error("Failed to get a response after 3 retries.");
             };
 
-            // --- AI Chat Event Listeners ---
             chatBtn.addEventListener('click', openChat);
             closeChatBtn.addEventListener('click', closeChat);
             sendChatBtn.addEventListener('click', handleChatSend);
-            // Allow sending with the "Enter" key
-            chatInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    handleChatSend();
-                }
-            });
+            chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleChatSend(); });
 
-
-            // Set initial state (show login page)
+            // Initial State
             showPage('login-page');
         });
     </script>
